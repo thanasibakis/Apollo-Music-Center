@@ -1,0 +1,9 @@
+section
+{
+	margin: 20px;
+}
+
+section .item_scroll
+{
+	overflow-x: overlay;
+}
