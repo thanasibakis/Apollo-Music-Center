@@ -3,7 +3,7 @@
 	<head>
 		<link rel="stylesheet" href="stylesheets/index.css" type="text/css" media="screen"/>
 		<link rel="stylesheet" href="stylesheets/header.css" type="text/css" media="screen"/>
-		<link rel="stylesheet" href="stylesheets/item.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="stylesheets/item_small.css" type="text/css" media="screen"/>
 		<title>Store</title>
 	</head>
 	<body>
@@ -23,7 +23,7 @@
 			</div>
 		</section>
 		<section>
-			<h3>Your Cart</h3>
+			<h3>Recently Viewed</h3>
 			<div class="item_scroll">
 				<table>
 					<tr>

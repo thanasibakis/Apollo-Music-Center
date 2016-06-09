@@ -1,31 +1,16 @@
-.item
+section
 {
-	width: 300px;
-	height: 330px;
-	border: 1px solid black;
-	padding: 10px;
-	margin-left: 20px;
-	display: inline-block;
+	margin: 20px;
 }
 
-.item h3
+section img
 {
-	margin-top: 0;
+	width: 500px;
+	float: left;
 }
 
-.item img
+section table
 {
-	width: 200px;
-	margin-left: 50px;
-}
-
-.item .description
-{
-	height: 18px;
-}
-
-.item table
-{
-	width: 100%;
-	text-align: center;
+	width: 400px;
+	float: right;
 }
