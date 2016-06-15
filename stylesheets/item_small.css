@@ -16,6 +16,7 @@
 .item_small img
 {
 	width: 200px;
+	min-height: 200px;
 	margin-left: 50px;
 }
 

@@ -1,3 +1,4 @@
+<?php include_once "setup.php" ?>
 <!doctype html>
 <html>
 	<head>
@@ -7,24 +8,33 @@
 		<title>Store</title>
 	</head>
 	<body>
-		<?php include 'html_include/header.html' ?>
+		<?php include 'header.html' ?>
 		<section>
-			<h3>Name</h3>
-			<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Smiley.svg/2000px-Smiley.svg.png" alt="Image"/>
+			<?php
+			$item = new Item($_GET["id"]);
+			$name = $item->get_name();
+			$price = $item->get_price_each();
+			$description = $item->get_description();
+			$image = $item->get_image_location();
+			$id = $_GET["id"];
+			?>
+			<h3><?php echo $name; ?></h3>
+			<img src="<?php echo $image; ?>" alt="Hmmm... this should be <?php echo $name; ?>"/>
 			<table>
 				<tr>
-					<td><p class="description">Description</p></td>
+					<td><p><?php echo $description; ?></p></td>
 				</tr>
 				<tr>
-					<td class="price">$0.00</td>
+					<td><?php echo $price; ?></td>
 				</tr>
 				<tr>
-					<td class="quantity_available">0 in stock</td>
+					<td>0 in stock</td>
 				</tr>
 				<tr>
 					<td>
-						<form>
-							<input type="button" value="Add to Cart"></input>
+						<form method="post" action="add_to_cart.php">
+							<input type="hidden" name="id" value="<?php echo $id; ?>">
+							<input type="submit" value="Add to Cart"></input>
 						</form>
 					</td>
 				</tr>
