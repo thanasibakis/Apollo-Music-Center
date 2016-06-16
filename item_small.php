@@ -4,8 +4,8 @@
 	<p><?php echo $description; ?></p>
 	<table>
 		<tr>
-			<td><?php echo $price; ?></td>
-			<td>0 in stock</td>
+			<td>$<?php echo $price; ?></td>
+			<td><?php echo $quantity; ?> in stock</td>
 			<td>
 				<form method="get" action="item.php">
 					<input type="hidden" name="id" value="<?php echo $id; ?>">

@@ -1,6 +1,45 @@
 <?php
 
-session_start();
+include_once "credentials.php";
+
+if($_GET["debug"] == 1)
+{
+	error_reporting(-1);
+	ini_set('display_errors', 'On');
+}
+
+if(!isset($_SESSION))
+{
+	session_start();
+}
+
+if(!isset($_SESSION["cart"]))
+{
+	$_SESSION["cart"] = array();
+}
+
+function sql($command)
+{
+	global $host;
+	global $user;
+	global $password;
+	global $db;
+	global $port;
+	
+	$link = mysqli_init();
+	$success = mysqli_real_connect(
+	   $link, 
+	   $host, 
+	   $user, 
+	   $password, 
+	   $db,
+	   $port
+	);
+	
+	$response = mysqli_query($link, $command);
+	mysqli_close($link);
+	return mysqli_fetch_array($response);
+}
 
 class Item
 {
@@ -13,64 +52,45 @@ class Item
 	
 	function get_id()
 	{
-		return($this->id);
+		return $this->id;
 	}
 	
 	function get_name()
 	{
-		if($this->get_id() == 0)
-		{
-			return("box");
-		} else
-		{
-			return("key");
-		}
+		$data = sql("select name from items where id=" . $this->get_id());
+		return $data["name"];
 	}
 	
 	function get_price_each()
 	{
-		if($this->get_id() == 0)
-		{
-			return("$0.10");
-		} else
-		{
-			return("$5.25");
-		}
+		$data = sql("select price from items where id=" . $this->get_id());
+		return $data["price"];
 	}
 	
 	function get_image_location()
 	{
-		if($this->get_id() == 0)
-		{
-			return("http://innovationzealot.typepad.com/photos/uncategorized/2007/11/28/open_box.jpg");
-		} else
-		{
-			return("http://images.wisegeek.com/brass-key.jpg");
-		}
+		$data = sql("select image_location from items where id=" . $this->get_id());
+		return $data["image_location"];
 	}
 	
 	function get_description()
 	{
-		if($this->get_id() == 0)
-		{
-			return("a box.");
-		} else
-		{
-			return("a key.");
-		}
+		$data = sql("select description from items where id=" . $this->get_id());
+		return $data["description"];
+	}
+	
+	function get_quantity_available()
+	{
+		$data = sql("select quantity_available from items where id=" . $this->get_id());
+		return $data["quantity_available"];
 	}
 }
 
 function get_featured_items()
 {
-	$one = new Item(0);
-	$two = new Item(1);
+	$one = new Item(4);
+	$two = new Item(5);
 	return array($one, $two);
-}
-
-if(!isset($_SESSION["cart"]))
-{
-	$_SESSION["cart"] = array();
 }
 
 ?>

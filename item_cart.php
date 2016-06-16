@@ -1,7 +1,7 @@
 <div class="item_cart">
 	<h3><?php echo $name; ?></h3>
 	<img src="<?php echo $image; ?>" alt="Hmmm... this should be <?php echo $name; ?>"/>
-	<p><?php echo $price; ?></p>
+	<p>$<?php echo $price; ?></p>
 	<table>
 		<tr>
 			<td>

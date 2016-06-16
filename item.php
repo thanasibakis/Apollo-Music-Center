@@ -1,5 +1,5 @@
-<?php include_once "setup.php" ?>
 <!doctype html>
+<?php include_once "setup.php" ?>
 <html>
 	<head>
 		<link rel="stylesheet" href="stylesheets/item.css" type="text/css" media="screen"/>
@@ -11,12 +11,13 @@
 		<?php include 'header.html' ?>
 		<section>
 			<?php
-			$item = new Item($_GET["id"]);
-			$name = $item->get_name();
-			$price = $item->get_price_each();
-			$description = $item->get_description();
-			$image = $item->get_image_location();
-			$id = $_GET["id"];
+				$item = new Item($_GET["id"]);
+				$name = $item->get_name();
+				$price = $item->get_price_each();
+				$description = $item->get_description();
+				$image = $item->get_image_location();
+				$quantity = $item->get_quantity_available();
+				$id = $_GET["id"];
 			?>
 			<h3><?php echo $name; ?></h3>
 			<img src="<?php echo $image; ?>" alt="Hmmm... this should be <?php echo $name; ?>"/>
@@ -25,10 +26,10 @@
 					<td><p><?php echo $description; ?></p></td>
 				</tr>
 				<tr>
-					<td><?php echo $price; ?></td>
+					<td>$<?php echo $price; ?></td>
 				</tr>
 				<tr>
-					<td>0 in stock</td>
+					<td><?php echo $quantity; ?> in stock</td>
 				</tr>
 				<tr>
 					<td>

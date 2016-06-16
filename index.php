@@ -1,5 +1,5 @@
 <!doctype html>
-<?php include_once("setup.php") ?>
+<?php include_once "setup.php" ?>
 <html>
 	<head>
 		<link rel="stylesheet" href="stylesheets/index.css" type="text/css" media="screen"/>
@@ -23,6 +23,8 @@
 								$description = $item->get_description();
 								$image = $item->get_image_location();
 								$id = $item->get_id();
+								$quantity = $item->get_quantity_available();
+								
 								echo "<td>";
 								include "item_small.php";
 								echo "</td>";
