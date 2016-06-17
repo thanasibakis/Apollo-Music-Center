@@ -8,7 +8,7 @@
 		<title>Store</title>
 	</head>
 	<body>
-		<?php include 'header.html' ?>
+		<?php include 'header.php' ?>
 		<section>
 			<?php
 				$item = new Item($_GET["id"]);
@@ -18,6 +18,24 @@
 				$image = $item->get_image_location();
 				$quantity = $item->get_quantity_available();
 				$id = $_GET["id"];
+				
+				$already_viewed = false;
+				foreach($_SESSION["recent"] as $viewed)
+				{
+					if($viewed->get_id() == $id)
+					{
+						$already_viewed = true;
+					}
+				}
+				if(!$already_viewed)
+				{
+					$_SESSION["recent"][] = $item;
+				}
+				while(count($_SESSION["recent"]) > 5)
+				{
+					unset($_SESSION["recent"][0]);
+					$_SESSION["recent"] = array_values($_SESSION["recent"]);
+				}
 			?>
 			<h3><?php echo $name; ?></h3>
 			<img src="<?php echo $image; ?>" alt="Hmmm... this should be <?php echo $name; ?>"/>

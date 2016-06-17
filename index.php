@@ -8,7 +8,7 @@
 		<title>Store</title>
 	</head>
 	<body>
-		<?php include 'header.html' ?>
+		<?php include 'header.php' ?>
 		<section>
 			<h3>Featured</h3>
 			<div class="item_scroll">
@@ -39,8 +39,28 @@
 			<div class="item_scroll">
 				<table>
 					<tr>
-						<td><?php include 'item_small.php' ?></td>
-						<td><?php include 'item_small.php' ?></td>
+							<?php
+								$recent_items = array_reverse($_SESSION["recent"]);
+								foreach($recent_items as $item)
+								{
+									$name = $item->get_name();
+									$price = $item->get_price_each();
+									$description = $item->get_description();
+									$image = $item->get_image_location();
+									$id = $item->get_id();
+									$quantity = $item->get_quantity_available();
+								
+									echo "<td>";
+									include "item_small.php";
+									echo "</td>";
+								}
+								
+								if(count($_SESSION["recent"]) == 0)
+								{
+									echo "Nothing viewed recently.";
+								}
+							?>
+						</tr>
 					</tr>
 				</table>
 			</div>

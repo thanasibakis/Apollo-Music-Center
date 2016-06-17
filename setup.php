@@ -18,6 +18,11 @@ if(!isset($_SESSION["cart"]))
 	$_SESSION["cart"] = array();
 }
 
+if(!isset($_SESSION["recent"]))
+{
+	$_SESSION["recent"] = array();
+}
+
 function sql($command)
 {
 	global $host;
@@ -38,7 +43,7 @@ function sql($command)
 	
 	$response = mysqli_query($link, $command);
 	mysqli_close($link);
-	return mysqli_fetch_array($response);
+	return mysqli_fetch_all($response, MYSQLI_ASSOC);
 }
 
 class Item
@@ -57,40 +62,46 @@ class Item
 	
 	function get_name()
 	{
-		$data = sql("select name from items where id=" . $this->get_id());
-		return $data["name"];
+		$rows = sql("select name from items where id=" . $this->get_id());
+		return $rows[0]["name"];
 	}
 	
 	function get_price_each()
 	{
-		$data = sql("select price from items where id=" . $this->get_id());
-		return $data["price"];
+		$rows = sql("select price from items where id=" . $this->get_id());
+		return $rows[0]["price"];
 	}
 	
 	function get_image_location()
 	{
-		$data = sql("select image_location from items where id=" . $this->get_id());
-		return $data["image_location"];
+		$rows = sql("select image_location from items where id=" . $this->get_id());
+		return $rows[0]["image_location"];
 	}
 	
 	function get_description()
 	{
-		$data = sql("select description from items where id=" . $this->get_id());
-		return $data["description"];
+		$rows = sql("select description from items where id=" . $this->get_id());
+		return $rows[0]["description"];
 	}
 	
 	function get_quantity_available()
 	{
-		$data = sql("select quantity_available from items where id=" . $this->get_id());
-		return $data["quantity_available"];
+		$rows = sql("select quantity_available from items where id=" . $this->get_id());
+		return $rows[0]["quantity_available"];
 	}
 }
 
 function get_featured_items()
 {
-	$one = new Item(4);
-	$two = new Item(5);
-	return array($one, $two);
+	$featured = array();
+	$rows = sql("select id from items where featured=true");
+	foreach($rows as $row)
+	{
+		$id = $row["id"];
+		$item = new Item($id);
+		$featured[] = $item;
+	}
+	return $featured;
 }
 
 ?>
