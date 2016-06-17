@@ -1,5 +1,5 @@
 <!doctype html>
-<?php include_once "setup.php" ?>
+<?php include_once "setup.php"; ?>
 <html>
 	<head>
 		<link rel="stylesheet" href="stylesheets/index.css" type="text/css" media="screen"/>
@@ -8,7 +8,7 @@
 		<title>Store</title>
 	</head>
 	<body>
-		<?php include 'header.php' ?>
+		<?php include "header.php"; ?>
 		<section>
 			<h3>Featured</h3>
 			<div class="item_scroll">

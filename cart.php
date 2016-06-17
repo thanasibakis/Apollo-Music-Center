@@ -1,5 +1,5 @@
 <!doctype html>
-<?php include_once "setup.php" ?>
+<?php include_once "setup.php"; ?>
 <html>
 	<head>
 		<link rel="stylesheet" href="stylesheets/index.css" type="text/css" media="screen"/>
@@ -8,9 +8,9 @@
 		<title>Store</title>
 	</head>
 	<body>
-		<?php include 'header.php' ?>
+		<?php include "header.php"; ?>
 		<section>
-			<h3>Your Cart (<?php echo count($_SESSION["cart"])?> Items)</h3>
+			<h3>Your Cart (<?php echo count_cart(); ?> Items)</h3>
 			<?php
 				$cart = array_reverse($_SESSION["cart"]);
 				

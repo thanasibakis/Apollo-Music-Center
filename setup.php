@@ -13,14 +13,14 @@ if(!isset($_SESSION))
 	session_start();
 }
 
-if(!isset($_SESSION["cart"]))
-{
-	$_SESSION["cart"] = array();
-}
-
 if(!isset($_SESSION["recent"]))
 {
 	$_SESSION["recent"] = array();
+}
+
+if(!isset($_SESSION["cart"]))
+{
+	$_SESSION["cart"] = array();
 }
 
 function sql($command)
@@ -55,6 +55,7 @@ function setup_for_html_include($item_object)
 	global $image;
 	global $quantity;
 	global $id;
+	global $quantity_in_cart;
 	
 	$name = $item_object->get_name();
 	$price = $item_object->get_price_each();
@@ -62,15 +63,18 @@ function setup_for_html_include($item_object)
 	$image = $item_object->get_image_location();
 	$quantity = $item_object->get_quantity_available();
 	$id = $item_object->get_id();
+	$quantity_in_cart = $item_object->get_quantity_in_cart();
 }
 
 class Item
 {
 	private $id;
+	private $quantity_in_cart;
 	
 	function __construct($id)
 	{
 		$this->id = $id;
+		$this->quantity_in_cart = 0;
 	}
 	
 	function get_id()
@@ -107,6 +111,44 @@ class Item
 		$rows = sql("select quantity_available from items where id=" . $this->get_id());
 		return $rows[0]["quantity_available"];
 	}
+	
+	function get_quantity_in_cart()
+	{
+		return $this->quantity_in_cart;
+	}
+	
+	function update_quantity_in_cart($change)
+	{
+		$this->quantity_in_cart += $change;
+		if($this->quantity_in_cart < 0)
+		{
+			$this->quantity_in_cart = 0;
+		}
+		return $this->get_quantity_in_cart();
+	}
+}
+
+function get_index_of_item_in_cart($item)
+{
+	$count = count($_SESSION["cart"]);
+	for($i = 0; $i < $count; $i++)
+	{
+		if(($_SESSION["cart"])[$i]->get_id() == $item->get_id())
+		{
+			return $i;
+		}
+	}
+	return -1;
+}
+
+function count_cart()
+{
+	$count = 0;
+	foreach($_SESSION["cart"] as $item)
+	{
+		$count += $item->get_quantity_in_cart();
+	}
+	return $count;
 }
 
 function get_featured_items()

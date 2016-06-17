@@ -1,5 +1,5 @@
 <!doctype html>
-<?php include_once "setup.php" ?>
+<?php include_once "setup.php"; ?>
 <html>
 	<head>
 		<link rel="stylesheet" href="stylesheets/item.css" type="text/css" media="screen"/>
@@ -8,9 +8,10 @@
 		<title>Store</title>
 	</head>
 	<body>
-		<?php include 'header.php' ?>
+		<?php include "header.php"; ?>
 		<section>
 			<?php
+				echo var_dump($_SESSION["recent"]); echo '<br/>';
 				$item = new Item($_GET["id"]);
 				setup_for_html_include($item);
 				
@@ -27,6 +28,7 @@
 				if(!$already_viewed)
 				{
 					$_SESSION["recent"][] = $item;
+					echo var_dump($_SESSION["recent"]);
 				}
 				
 				while(count($_SESSION["recent"]) > 5)
