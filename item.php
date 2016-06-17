@@ -12,14 +12,10 @@
 		<section>
 			<?php
 				$item = new Item($_GET["id"]);
-				$name = $item->get_name();
-				$price = $item->get_price_each();
-				$description = $item->get_description();
-				$image = $item->get_image_location();
-				$quantity = $item->get_quantity_available();
-				$id = $_GET["id"];
+				setup_for_html_include($item);
 				
 				$already_viewed = false;
+				
 				foreach($_SESSION["recent"] as $viewed)
 				{
 					if($viewed->get_id() == $id)
@@ -27,10 +23,12 @@
 						$already_viewed = true;
 					}
 				}
+				
 				if(!$already_viewed)
 				{
 					$_SESSION["recent"][] = $item;
 				}
+				
 				while(count($_SESSION["recent"]) > 5)
 				{
 					unset($_SESSION["recent"][0]);

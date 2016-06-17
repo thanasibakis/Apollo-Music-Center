@@ -17,14 +17,10 @@
 				{
 					$id = $row["id"];
 					$item = new Item($id);
-					$name = $item->get_name();
-					$price = $item->get_price_each();
-					$description = $item->get_description();
-					$image = $item->get_image_location();
-					$quantity = $item->get_quantity_available();
-					
+					setup_for_html_include($item);
 					include "item_small.php";
 				}
+				
 				if(count($rows) == 0)
 				{
 					echo "No results.";

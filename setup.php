@@ -46,6 +46,24 @@ function sql($command)
 	return mysqli_fetch_all($response, MYSQLI_ASSOC);
 }
 
+function setup_for_html_include($item_object)
+{
+	/* creates global variables for every entry for the html items to access */
+	global $name;
+	global $price;
+	global $description;
+	global $image;
+	global $quantity;
+	global $id;
+	
+	$name = $item_object->get_name();
+	$price = $item_object->get_price_each();
+	$description = $item_object->get_description();
+	$image = $item_object->get_image_location();
+	$quantity = $item_object->get_quantity_available();
+	$id = $item_object->get_id();
+}
+
 class Item
 {
 	private $id;

@@ -13,15 +13,10 @@
 			<h3>Your Cart (<?php echo count($_SESSION["cart"])?> Items)</h3>
 			<?php
 				$cart = array_reverse($_SESSION["cart"]);
+				
 				foreach($cart as $item)
 				{
-					$name = $item->get_name();
-					$price = $item->get_price_each();
-					$description = $item->get_description();
-					$image = $item->get_image_location();
-					$id = $item->get_id();
-					$quantity = $item->get_quantity_available();
-					
+					setup_for_html_include($item);
 					include "item_cart.php";
 				}
 				

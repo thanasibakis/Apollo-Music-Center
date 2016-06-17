@@ -18,12 +18,7 @@
 							$featured_items = get_featured_items();
 							foreach($featured_items as $item)
 							{
-								$name = $item->get_name();
-								$price = $item->get_price_each();
-								$description = $item->get_description();
-								$image = $item->get_image_location();
-								$id = $item->get_id();
-								$quantity = $item->get_quantity_available();
+								setup_for_html_include($item);
 								
 								echo "<td>";
 								include "item_small.php";
@@ -43,12 +38,7 @@
 								$recent_items = array_reverse($_SESSION["recent"]);
 								foreach($recent_items as $item)
 								{
-									$name = $item->get_name();
-									$price = $item->get_price_each();
-									$description = $item->get_description();
-									$image = $item->get_image_location();
-									$id = $item->get_id();
-									$quantity = $item->get_quantity_available();
+									setup_for_html_include($item);
 								
 									echo "<td>";
 									include "item_small.php";
