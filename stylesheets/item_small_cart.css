@@ -1,4 +1,4 @@
-.item_cart
+.item_small, .item_cart
 {
 	width: 300px;
 	height: 330px;
@@ -6,26 +6,26 @@
 	margin-left: 20px;
 	margin-bottom: 20px;
 	display: inline-block;
+	text-align: center;
 }
 
-.item_cart h3
+.item_small h3, .item_cart h3
 {
 	margin-top: 0;
 }
 
-.item_cart img
+.item_small img, .item_cart img
 {
 	width: 200px;
 	min-height: 200px;
-	margin-left: 50px;
 }
 
-.item_cart p
+.item_small p, .item_cart p
 {
 	height: 18px;
 }
 
-.item_cart table
+.item_small table, .item_cart table
 {
 	width: 100%;
 	text-align: center;

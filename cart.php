@@ -6,7 +6,7 @@
 		<link rel="stylesheet" href="stylesheets/header.css" type="text/css" media="screen"/>
 		<link rel="stylesheet" href="stylesheets/theme.css" type="text/css" media="screen"/>
 		<link rel="stylesheet" href="stylesheets/cart.css" type="text/css" media="screen"/>
-		<link rel="stylesheet" href="stylesheets/item_cart.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="stylesheets/item_small_cart.css" type="text/css" media="screen"/>
 		<title>Apollo Music Center</title>
 	</head>
 	<body>
