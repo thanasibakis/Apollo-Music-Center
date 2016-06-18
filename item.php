@@ -1,5 +1,5 @@
-<!doctype html>
 <?php include_once "setup.php"; ?>
+<!doctype html>
 <html>
 	<head>
 		<link rel="stylesheet" href="stylesheets/item.css" type="text/css" media="screen"/>
@@ -11,7 +11,6 @@
 		<?php include "header.php"; ?>
 		<section>
 			<?php
-				echo var_dump($_SESSION["recent"]); echo '<br/>';
 				$item = new Item($_GET["id"]);
 				create_data_vars($item);
 				
@@ -28,7 +27,6 @@
 				if(!$already_viewed)
 				{
 					$_SESSION["recent"][] = $item;
-					echo var_dump($_SESSION["recent"]);
 				}
 				
 				while(count($_SESSION["recent"]) > 5)

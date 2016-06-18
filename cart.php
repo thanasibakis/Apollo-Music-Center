@@ -1,5 +1,5 @@
-<!doctype html>
 <?php include_once "setup.php"; ?>
+<!doctype html>
 <html>
 	<head>
 		<link rel="stylesheet" href="stylesheets/index.css" type="text/css" media="screen"/>

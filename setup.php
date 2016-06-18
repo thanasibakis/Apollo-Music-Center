@@ -1,5 +1,7 @@
 <?php
 
+/* include this file before doctype to ensure proper session functionality */
+
 include_once "credentials.php";
 
 if($_GET["debug"] == 1)
