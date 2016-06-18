@@ -12,8 +12,8 @@
 	</table>
 	<table id="navigation">
 		<tr>
-			<td>Category</td>
-			<td>Category</td>
+			<td><a href="category.php?category=item">Items</a></td>
+			<td><a href="category.php?category=food">Foods</a></td>
 			<td>Category</td>
 			<td>Category</td>
 			<td><a href="cart.php">View Cart</a></td>

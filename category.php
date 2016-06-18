@@ -11,20 +11,18 @@
 	<body>
 		<?php include "header.php"; ?>
 		<section>
-			<h3>Results for "<?php echo $_GET["name"]; ?>"</h3>
+			<h3><?php echo $_GET["category"]; ?> Items</h3>
 			<?php
-				$rows = sql("select id from items where name like '%" . $_GET["name"] . "%'");
-				foreach($rows as $row)
+				$items = get_category_items($_GET["category"]);
+				foreach($items as $item)
 				{
-					$id = $row["id"];
-					$item = new Item($id);
 					create_data_vars($item);
 					include "item_small.php";
 				}
 				
-				if(count($rows) == 0)
+				if(count($items) == 0)
 				{
-					echo "No results.";
+					echo "No items found.";
 				}
 			?>
 		</section>

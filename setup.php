@@ -189,4 +189,17 @@ function get_featured_items()
 	return $featured;
 }
 
+function get_category_items($category)
+{
+	$items = array();
+	$rows = sql("select id from items where category='$category'");
+	foreach($rows as $row)
+	{
+		$id = $row["id"];
+		$item = new Item($id);
+		$items[] = $item;
+	}
+	return $items;
+}
+
 ?>

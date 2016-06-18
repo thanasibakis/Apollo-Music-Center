@@ -2,10 +2,25 @@
 <!doctype html>
 <html>
 	<head>
-		<link rel="stylesheet" href="stylesheets/item.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="stylesheets/section.css" type="text/css" media="screen"/>
 		<link rel="stylesheet" href="stylesheets/header.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="stylesheets/theme.css" type="text/css" media="screen"/>
 		<link rel="stylesheet" href="stylesheets/item_small.css" type="text/css" media="screen"/>
 		<title>Store</title>
+		
+		<style>
+			section img
+			{
+				width: 500px;
+				float: left;
+			}
+        	
+			section table
+			{
+				width: 400px;
+				float: right;
+			}
+		</style>
 	</head>
 	<body>
 		<?php include "header.php"; ?>

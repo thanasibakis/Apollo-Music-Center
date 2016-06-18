@@ -2,8 +2,9 @@
 <!doctype html>
 <html>
 	<head>
-		<link rel="stylesheet" href="stylesheets/index.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="stylesheets/section.css" type="text/css" media="screen"/>
 		<link rel="stylesheet" href="stylesheets/header.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="stylesheets/theme.css" type="text/css" media="screen"/>
 		<title>Store</title>
 	</head>
 	<body>
@@ -20,10 +21,11 @@
 			$city = $_POST["city"];
 			$card_number = $_POST["card_number"];
 			$card_exp_date = $_POST["card_exp_date"];
+			$cost = total_cart_cost();
 			
-			$values = "'$first_name','$last_name','$street','$city','$card_number','$card_exp_date','$cart'";
+			$values = "'$first_name','$last_name','$street','$city','$card_number','$card_exp_date',$cost,'$cart'";
 			
-			sql("insert into transactions(first_name, last_name, street, city, card_number, card_exp_date, order_contents) values($values);");
+			sql("insert into transactions(first_name, last_name, street, city, card_number, card_exp_date, order_cost, order_contents) values($values);");
 			$row = sql("select order_number from transactions where order_contents like '$cart' and card_number='$card_number';");
 			
 			$order_number = $row[0]["order_number"];

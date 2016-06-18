@@ -2,8 +2,9 @@
 <!doctype html>
 <html>
 	<head>
-		<link rel="stylesheet" href="stylesheets/index.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="stylesheets/section.css" type="text/css" media="screen"/>
 		<link rel="stylesheet" href="stylesheets/header.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="stylesheets/theme.css" type="text/css" media="screen"/>
 		<link rel="stylesheet" href="stylesheets/item_small.css" type="text/css" media="screen"/>
 		<title>Store</title>
 	</head>
