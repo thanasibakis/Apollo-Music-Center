@@ -12,10 +12,14 @@
 	</table>
 	<table id="navigation">
 		<tr>
-			<td><a href="category.php?category=item">Items</a></td>
-			<td><a href="category.php?category=food">Foods</a></td>
-			<td>Category</td>
-			<td>Category</td>
+			<?php
+				$rows = sql("select distinct category from items;");
+				foreach($rows as $row)
+				{
+					$category = $row["category"];
+					echo "<td><a href='category.php?category=$category'>$category</a></td>";
+				}
+			?>
 			<td><a href="cart.php">View Cart</a></td>
 		</tr>
 	</table>

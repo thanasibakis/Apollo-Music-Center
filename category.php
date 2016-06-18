@@ -11,7 +11,7 @@
 	<body>
 		<?php include "header.php"; ?>
 		<section>
-			<h3><?php echo $_GET["category"]; ?> Items</h3>
+			<h3><?php echo $_GET["category"]; ?></h3>
 			<?php
 				$items = get_category_items($_GET["category"]);
 				foreach($items as $item)
