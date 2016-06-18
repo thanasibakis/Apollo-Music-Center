@@ -4,6 +4,7 @@
 {
 	font-family: 'Roboto', serif;
 	color: #1a1a1a;
+	max-height: 999999px; /* disable Chrome Mobile's font-boosting feature/bug */
 }
 
 a
