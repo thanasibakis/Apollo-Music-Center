@@ -1,7 +1,7 @@
 <header>
 	<table id="top">
 		<tr>
-			<td><a href="index.php"><h1>Title</h1></a></td>
+			<td><a href="index.php"><h1>Apollo Music Center</h1></a></td>
 			<td>
 				<form method="get" action="search.php">
 					<input type="search" name="name" required></input>

@@ -1,0 +1,18 @@
+section img
+{
+	width: 500px;
+	min-height: 500px;
+	float: left;
+	background-color: white;
+	padding: 10px;
+	box-shadow: 1px 1px 4px #d3d3d3;
+}
+
+section table
+{
+	width: 400px;
+	float: right;
+	background-color: white;
+	padding: 10px;
+	box-shadow: 1px 1px 4px #d3d3d3;
+}
