@@ -13,7 +13,7 @@
 			<?php
 				echo var_dump($_SESSION["recent"]); echo '<br/>';
 				$item = new Item($_GET["id"]);
-				setup_for_html_include($item);
+				create_data_vars($item);
 				
 				$already_viewed = false;
 				

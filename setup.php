@@ -41,12 +41,16 @@ function sql($command)
 	   $port
 	);
 	
-	$response = mysqli_query($link, $command);
+	$response = mysqli_query($link, $command) or die(mysqli_error($link));
 	mysqli_close($link);
+	if(gettype($response) == "boolean")
+	{
+		return array();
+	}
 	return mysqli_fetch_all($response, MYSQLI_ASSOC);
 }
 
-function setup_for_html_include($item_object)
+function create_data_vars($item_object)
 {
 	/* creates global variables for every entry for the html items to access */
 	global $name;
@@ -56,6 +60,7 @@ function setup_for_html_include($item_object)
 	global $quantity;
 	global $id;
 	global $quantity_in_cart;
+	global $total_price;
 	
 	$name = $item_object->get_name();
 	$price = $item_object->get_price_each();
@@ -64,6 +69,7 @@ function setup_for_html_include($item_object)
 	$quantity = $item_object->get_quantity_available();
 	$id = $item_object->get_id();
 	$quantity_in_cart = $item_object->get_quantity_in_cart();
+	$total_price = $item_object->get_total_price();
 }
 
 class Item
@@ -84,31 +90,38 @@ class Item
 	
 	function get_name()
 	{
-		$rows = sql("select name from items where id=" . $this->get_id());
+		$rows = sql("select name from items where id=" . $this->get_id() . ';');
 		return $rows[0]["name"];
 	}
 	
 	function get_price_each()
 	{
-		$rows = sql("select price from items where id=" . $this->get_id());
-		return $rows[0]["price"];
+		$rows = sql("select price from items where id=" . $this->get_id() . ';');
+		$price = $rows[0]["price"];
+		return number_format($price, 2, '.', '');
+	}
+	
+	function get_total_price()
+	{
+		$total = $this->get_price_each() * $this->get_quantity_in_cart();
+		return number_format($total, 2, '.', '');
 	}
 	
 	function get_image_location()
 	{
-		$rows = sql("select image_location from items where id=" . $this->get_id());
+		$rows = sql("select image_location from items where id=" . $this->get_id() . ';');
 		return $rows[0]["image_location"];
 	}
 	
 	function get_description()
 	{
-		$rows = sql("select description from items where id=" . $this->get_id());
+		$rows = sql("select description from items where id=" . $this->get_id() . ';');
 		return $rows[0]["description"];
 	}
 	
 	function get_quantity_available()
 	{
-		$rows = sql("select quantity_available from items where id=" . $this->get_id());
+		$rows = sql("select quantity_available from items where id=" . $this->get_id() . ';');
 		return $rows[0]["quantity_available"];
 	}
 	
@@ -149,6 +162,16 @@ function count_cart()
 		$count += $item->get_quantity_in_cart();
 	}
 	return $count;
+}
+
+function total_cart_cost()
+{
+	$total = 0;
+	foreach($_SESSION["cart"] as $item)
+	{
+		$total += $item->get_total_price();
+	}
+	return number_format($total, 2, '.', '');;
 }
 
 function get_featured_items()

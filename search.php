@@ -17,7 +17,7 @@
 				{
 					$id = $row["id"];
 					$item = new Item($id);
-					setup_for_html_include($item);
+					create_data_vars($item);
 					include "item_small.php";
 				}
 				

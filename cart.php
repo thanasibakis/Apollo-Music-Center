@@ -4,7 +4,7 @@
 	<head>
 		<link rel="stylesheet" href="stylesheets/index.css" type="text/css" media="screen"/>
 		<link rel="stylesheet" href="stylesheets/header.css" type="text/css" media="screen"/>
-		<link rel="stylesheet" href="stylesheets/item_cart.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="stylesheets/item_cart.css" type="text/css" media="screen"/>
 		<title>Store</title>
 	</head>
 	<body>
@@ -14,15 +14,31 @@
 			<?php
 				$cart = array_reverse($_SESSION["cart"]);
 				
-				foreach($cart as $item)
+				if(isset($_POST["checkout"])) // enter checkout mode
 				{
-					setup_for_html_include($item);
-					include "item_cart.php";
+					include "customer_info_form.php";
 				}
-				
-				if(count($cart) == 0)
+				else // enter cart-view mode
 				{
-					echo "Your cart is empty!";
+					if(count_cart() > 0) // show option to enter checkoutmode
+					{
+						echo "<h4 style='display: inline;'>Total cost: $" . total_cart_cost() . "</h4>";
+						echo "<form style='display: inline;' method='post' action = 'cart.php'>";
+						echo "	<input type='hidden' name='checkout' value='1'></input>";
+						echo "	<input type='submit' value='Check out'></input>";
+						echo "</form><br/>";
+					} 
+					
+					foreach($cart as $item)
+					{
+						create_data_vars($item);
+						include "item_cart.php";
+					}
+					
+					if(count($cart) == 0)
+					{
+						echo "Your cart is empty!";
+					}
 				}
 			?>
 		</section>

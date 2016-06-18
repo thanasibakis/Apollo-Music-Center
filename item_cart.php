@@ -1,7 +1,7 @@
 <div class="item_cart">
 	<h3><?php echo $name; ?> (<?php echo $quantity_in_cart; ?>)</h3>
 	<img src="<?php echo $image; ?>" alt="Hmmm... this should be <?php echo $name; ?>"/>
-	<p>$<?php echo "$price * $quantity_in_cart items"; ?></p>
+	<p>$<?php echo "$price * $quantity_in_cart items = $$total_price"; ?></p>
 	<table>
 		<tr>
 			<td>

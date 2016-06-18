@@ -18,7 +18,7 @@
 							$featured_items = get_featured_items();
 							foreach($featured_items as $item)
 							{
-								setup_for_html_include($item);
+								create_data_vars($item);
 								
 								echo "<td>";
 								include "item_small.php";
@@ -38,7 +38,7 @@
 								$recent_items = array_reverse($_SESSION["recent"]);
 								foreach($recent_items as $item)
 								{
-									setup_for_html_include($item);
+									create_data_vars($item);
 								
 									echo "<td>";
 									include "item_small.php";
