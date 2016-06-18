@@ -13,12 +13,18 @@
 			{
 				width: 500px;
 				float: left;
+				background-color: white;
+				padding: 10px;
+				box-shadow: 1px 1px 4px #d3d3d3;
 			}
         	
 			section table
 			{
 				width: 400px;
 				float: right;
+				background-color: white;
+				padding: 10px;
+				box-shadow: 1px 1px 4px #d3d3d3;
 			}
 		</style>
 	</head>
@@ -54,7 +60,10 @@
 			<img src="<?php echo $image; ?>" alt="Hmmm... this should be <?php echo $name; ?>"/>
 			<table>
 				<tr>
-					<td><p><?php echo $description; ?></p></td>
+					<td><?php echo $description; ?></td>
+				</tr>
+				<tr>
+					<td><p></p></td><!-- Add space between description and price -->
 				</tr>
 				<tr>
 					<td>$<?php echo $price; ?></td>

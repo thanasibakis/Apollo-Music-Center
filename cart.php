@@ -11,7 +11,7 @@
 	<body>
 		<?php include "header.php"; ?>
 		<section>
-			<h3>Your Cart (<?php echo count_cart(); ?> Items)</h3>
+			<h3>Your Cart (<?php echo count_cart(); ?>)</h3>
 			<?php
 				$cart = array_reverse($_SESSION["cart"]);
 				
@@ -21,10 +21,10 @@
 				}
 				else // enter cart-view mode
 				{
-					if(count_cart() > 0) // show option to enter checkoutmode
+					if(count_cart() > 0) // show option to enter checkout mode
 					{
 						echo "<h4 style='display: inline;'>Total cost: $" . total_cart_cost() . "</h4>";
-						echo "<form style='display: inline;' method='post' action = 'cart.php'>";
+						echo "<form style='display: inline; margin-left: 10px;' method='post' action = 'cart.php'>";
 						echo "	<input type='hidden' name='checkout' value='1'></input>";
 						echo "	<input type='submit' value='Check out'></input>";
 						echo "</form><br/>";
@@ -38,7 +38,7 @@
 					
 					if(count($cart) == 0)
 					{
-						echo "Your cart is empty!";
+						echo "Your cart is empty.";
 					}
 				}
 			?>
