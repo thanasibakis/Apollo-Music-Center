@@ -1,4 +1,4 @@
-<?php include_once "setup.php"; ?>
+<?php include_once "include/setup.php"; ?>
 <!doctype html>
 <html>
 	<head>
@@ -9,16 +9,19 @@
 		<title>Apollo Music Center</title>
 	</head>
 	<body>
-		<?php include "header.php"; ?>
+		<?php include "include/header.php"; ?>
 		<section>
 			<h3><?php echo $_GET["category"]; ?></h3>
 			<?php
 				$items = get_category_items($_GET["category"]);
+				
+				echo "<div class='item_grid'>";
 				foreach($items as $item)
 				{
 					create_data_vars($item);
-					include "item_small.php";
+					include "include/item_small.php";
 				}
+				echo "</div>";
 				
 				if(count($items) == 0)
 				{

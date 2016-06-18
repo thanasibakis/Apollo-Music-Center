@@ -1,4 +1,4 @@
-<?php include_once "setup.php"; ?>
+<?php include_once "include/setup.php"; ?>
 <!doctype html>
 <html>
 	<head>
@@ -9,7 +9,7 @@
 		<title>Apollo Music Center</title>
 	</head>
 	<body>
-		<?php include "header.php"; ?>
+		<?php include "include/header.php"; ?>
 		<section>
 			<h3>Featured</h3>
 			<div class="item_scroll">
@@ -22,7 +22,7 @@
 								create_data_vars($item);
 								
 								echo "<td>";
-								include "item_small.php";
+								include "include/item_small.php";
 								echo "</td>";
 							}
 						?>
@@ -35,23 +35,22 @@
 			<div class="item_scroll">
 				<table>
 					<tr>
-							<?php
-								$recent_items = array_reverse($_SESSION["recent"]);
-								foreach($recent_items as $item)
-								{
-									create_data_vars($item);
-								
-									echo "<td>";
-									include "item_small.php";
-									echo "</td>";
-								}
-								
-								if(count($_SESSION["recent"]) == 0)
-								{
-									echo "Nothing viewed recently.";
-								}
-							?>
-						</tr>
+						<?php
+							$recent_items = array_reverse($_SESSION["recent"]);
+							foreach($recent_items as $item)
+							{
+								create_data_vars($item);
+							
+								echo "<td>";
+								include "include/item_small.php";
+								echo "</td>";
+							}
+							
+							if(count($_SESSION["recent"]) == 0)
+							{
+								echo "Nothing viewed recently.";
+							}
+						?>
 					</tr>
 				</table>
 			</div>

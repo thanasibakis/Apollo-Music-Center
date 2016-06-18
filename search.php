@@ -1,4 +1,4 @@
-<?php include_once "setup.php"; ?>
+<?php include_once "include/setup.php"; ?>
 <!doctype html>
 <html>
 	<head>
@@ -9,24 +9,26 @@
 		<title>Apollo Music Center</title>
 	</head>
 	<body>
-		<?php include "header.php"; ?>
+		<?php include "include/header.php"; ?>
 		<section>
 			<h3>Results for "<?php echo $_GET["name"]; ?>"</h3>
-			<?php
-				$rows = sql("select id from items where name like '%" . $_GET["name"] . "%'");
-				foreach($rows as $row)
-				{
-					$id = $row["id"];
-					$item = new Item($id);
-					create_data_vars($item);
-					include "item_small.php";
-				}
-				
-				if(count($rows) == 0)
-				{
-					echo "No results.";
-				}
-			?>
+			<div class="item_grid">
+				<?php
+					$rows = sql("select id from items where name like '%" . $_GET["name"] . "%'");
+					foreach($rows as $row)
+					{
+						$id = $row["id"];
+						$item = new Item($id);
+						create_data_vars($item);
+						include "include/item_small.php";
+					}
+					
+					if(count($rows) == 0)
+					{
+						echo "No results.";
+					}
+				?>
+			</div>
 		</section>
 	</body>
 </html>

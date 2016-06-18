@@ -1,4 +1,4 @@
-<?php include_once "setup.php"; ?>
+<?php include_once "include/setup.php"; ?>
 <!doctype html>
 <html>
 	<head>
@@ -9,7 +9,7 @@
 		<title>Apollo Music Center</title>
 	</head>
 	<body>
-		<?php include "header.php"; ?>
+		<?php include "include/header.php"; ?>
 		<section>
 			<?php
 				$item = new Item($_GET["id"]);

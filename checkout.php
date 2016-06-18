@@ -1,4 +1,4 @@
-<?php include_once "setup.php"; ?>
+<?php include_once "include/setup.php"; ?>
 <!doctype html>
 <html>
 	<head>
@@ -31,7 +31,7 @@
 			$order_number = $row[0]["order_number"];
 			$_SESSION["cart"] = array();
 		?>
-		<?php include "header.php"; ?>
+		<?php include "include/header.php"; ?>
 		<section>
 			<h3>Order Complete</h3>
 			<h4>Your order number: <?php echo $order_number; ?></h4>

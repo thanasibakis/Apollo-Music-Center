@@ -1,12 +1,15 @@
 <form method="post" action="checkout.php">
-	<label for="name">Name:</label>
-	<input type="text" name="first_name" id="name" placeholder="First" required></input>
-	<input type="text" name="last_name" placeholder="Last" required></input>
-	<br/>
-	<label for="address">Address:</label>
-	<input type="text" name="street" id="address" placeholder="Number/Street" required></input>
-	<input type="text" name="city" placeholder="City" required></input>
-	<select name="state">
+	<table id="customer_info_form">
+		<tr>
+			<td>Name:</td>
+			<td><input type="text" name="first_name" id="name" placeholder="First" required></input></td>
+			<td><input type="text" name="last_name" placeholder="Last" required></input></td>
+		</tr>
+		<tr>
+			<td>Address:</td>
+			<td><input type="text" name="street" id="address" placeholder="Number/Street" required></input></td>
+			<td><input type="text" name="city" placeholder="City" required></input></td>
+			<td><select name="state">
 		<option value="AL">Alabama</option>
 		<option value="AK">Alaska</option>
 		<option value="AZ">Arizona</option>
@@ -58,12 +61,15 @@
 		<option value="WV">West Virginia</option>
 		<option value="WI">Wisconsin</option>
 		<option value="WY">Wyoming</option>
-	</select>
-	<br/>
-	<label for="credit_card_number">Credit Card:</label>
-	<input type="text" name="card_number" id="credit_card_number" placeholder="Number" required></input>
-	<label for="credit_card_date">Exp.</label>
-	<input type="date" name="card_exp_date" id="credit_card_date" required></input>
-	<br/>
-	<input type="submit" value="Order Now" required></input>
+	</select></td>
+		</tr>
+		<tr>
+			<td>Credit Card:</td>
+			<td><input type="text" name="card_number" id="credit_card_number" placeholder="Number" required></input></td>
+			<td>Exp. <input type="date" name="card_exp_date" id="credit_card_date" required></input></td>
+		</tr>
+		<tr>
+			<td colspan="4"><input type="submit" value="Order Now"></input></td>
+		</tr>
+	</table>
 </form>

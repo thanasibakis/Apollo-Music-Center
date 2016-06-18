@@ -1,5 +1,5 @@
 <?php
-include_once "setup.php";
+include_once "include/setup.php";
 
 if(isset($_POST["id"]))
 {

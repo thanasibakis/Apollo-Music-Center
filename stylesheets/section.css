@@ -7,3 +7,13 @@ section .item_scroll
 {
 	overflow-x: overlay;
 }
+
+section .item_scroll table
+{
+	margin: auto;
+}
+
+section .item_grid
+{
+	text-align:center; /* because the inline-block divs work like text */
+}

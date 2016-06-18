@@ -1,6 +1,6 @@
 @import 'https://fonts.googleapis.com/css?family=Roboto';
 
-*, h1, h2, h3, h4, h5
+*
 {
 	font-family: 'Roboto', serif;
 	color: #1a1a1a;
@@ -23,7 +23,7 @@ body
 	background-color: #f6f6f6;
 }
 
-.item_small, .item_cart
+.item_small, .item_cart, #customer_info_form
 {
 	background-color: white;
 	border-radius: 2px;

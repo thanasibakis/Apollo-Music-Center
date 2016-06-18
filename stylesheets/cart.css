@@ -1,0 +1,12 @@
+#checkout_button_form
+{
+	display: inline;
+	margin-left: 10px;
+}
+
+#customer_info_form
+{
+	padding: 10px;
+	text-align: right;
+	margin: auto
+}
