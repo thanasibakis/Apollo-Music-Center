@@ -4,7 +4,7 @@
 
 include_once "credentials.php";
 
-if($_GET["debug"] == 1)
+if(isset($_GET["debug"]))
 {
 	error_reporting(-1);
 	ini_set('display_errors', 'On');
@@ -25,8 +25,18 @@ if(!isset($_SESSION["cart"]))
 	$_SESSION["cart"] = array();
 }
 
-function sql($command)
+function refValues($arr)
 {
+	/* Creates an array of references for call_user_func_array to call mysqli_stmt_bind_param in sql_procedure */
+	$refs = array();
+	foreach($arr as $key => $value)
+		$refs[$key] = &$arr[$key];
+	return $refs;
+}
+
+function sql_procedure($procedure, $args=array(), $types='')
+{
+	// set up db connection
 	global $host;
 	global $user;
 	global $password;
@@ -43,11 +53,28 @@ function sql($command)
 	   $port
 	);
 	
-	$response = mysqli_query($link, $command) or die(mysqli_error($link));
+	// create a valid parameterized call statement from the procedure name
+	$call = "call $procedure(";
+	foreach($args as $arg)
+	{
+		$call .= "?,";
+	}
+	$call = rtrim($call, ",") . ");";
+	$stmt = mysqli_prepare($link, $call);
+	
+	// load all data onto args to pass into bind_param
+	array_unshift($args, $stmt, $types);
+	
+	// execute call and close connection
+	call_user_func_array("mysqli_stmt_bind_param", refValues($args));
+	mysqli_stmt_execute($stmt);
+	$response = mysqli_stmt_get_result($stmt);
+	mysqli_stmt_close($stmt);
 	mysqli_close($link);
+	
 	if(gettype($response) == "boolean")
 	{
-		return array();
+		return array('');
 	}
 	return mysqli_fetch_all($response, MYSQLI_ASSOC);
 }
@@ -92,14 +119,14 @@ class Item
 	
 	function get_name()
 	{
-		$rows = sql("select name from items where id=" . $this->get_id() . ';');
-		return $rows[0]["name"];
+		$rows = sql_procedure("GetColumnByID", array("name", $this->get_id()), "ss");
+		return $rows[0]["procedureResult"];
 	}
 	
 	function get_price_each()
 	{
-		$rows = sql("select price from items where id=" . $this->get_id() . ';');
-		$price = $rows[0]["price"];
+		$rows = sql_procedure("GetColumnByID", array("price", $this->get_id()), "ss");
+		$price = $rows[0]["procedureResult"];
 		return number_format($price, 2, '.', '');
 	}
 	
@@ -111,20 +138,20 @@ class Item
 	
 	function get_image_location()
 	{
-		$rows = sql("select image_location from items where id=" . $this->get_id() . ';');
-		return $rows[0]["image_location"];
+		$rows = sql_procedure("GetColumnByID", array("image_location", $this->get_id()), "ss");
+		return $rows[0]["procedureResult"];
 	}
 	
 	function get_description()
 	{
-		$rows = sql("select description from items where id=" . $this->get_id() . ';');
-		return $rows[0]["description"];
+		$rows = sql_procedure("GetColumnByID", array("description", $this->get_id()), "ss");
+		return $rows[0]["procedureResult"];
 	}
 	
 	function get_quantity_available()
 	{
-		$rows = sql("select quantity_available from items where id=" . $this->get_id() . ';');
-		return $rows[0]["quantity_available"];
+		$rows = sql_procedure("GetColumnByID", array("quantity_available", $this->get_id()), "ss");
+		return $rows[0]["procedureResult"];
 	}
 	
 	function get_quantity_in_cart()
@@ -179,7 +206,7 @@ function total_cart_cost()
 function get_featured_items()
 {
 	$featured = array();
-	$rows = sql("select id from items where featured=true");
+	$rows = sql_procedure("GetFeatured");
 	foreach($rows as $row)
 	{
 		$id = $row["id"];
@@ -192,7 +219,7 @@ function get_featured_items()
 function get_category_items($category)
 {
 	$items = array();
-	$rows = sql("select id from items where category='$category'");
+	$rows = sql_procedure("GetIDbyCategory", array($category), 's');
 	foreach($rows as $row)
 	{
 		$id = $row["id"];

@@ -14,7 +14,7 @@
 			<h3>Results for "<?php echo $_GET["name"]; ?>"</h3>
 			<div class="item_grid">
 				<?php
-					$rows = sql("select id from items where name like '%" . $_GET["name"] . "%'");
+					$rows = sql_procedure("GetIDbyName", array($_GET["name"]), 's');
 					foreach($rows as $row)
 					{
 						$id = $row["id"];

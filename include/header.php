@@ -13,7 +13,7 @@
 	<table id="navigation">
 		<tr>
 			<?php
-				$rows = sql("select distinct category from items;");
+				$rows = sql_procedure("GetCategories");
 				foreach($rows as $row)
 				{
 					$category = $row["category"];

@@ -23,10 +23,8 @@
 			$card_exp_date = $_POST["card_exp_date"];
 			$cost = total_cart_cost();
 			
-			$values = "'$first_name','$last_name','$street','$city','$card_number','$card_exp_date',$cost,'$cart'";
-			
-			sql("insert into transactions(first_name, last_name, street, city, card_number, card_exp_date, order_cost, order_contents) values($values);");
-			$row = sql("select order_number from transactions where order_contents like '$cart' and card_number='$card_number';");
+			sql_procedure("AddTransaction", array($first_name, $last_name, $street, $city, $card_number, $card_exp_date, $cost, $cart), "ssssssds");
+			$row = sql_procedure("GetOrderNumber", array($cart, $card_number), "ss");
 			
 			$order_number = $row[0]["order_number"];
 			$_SESSION["cart"] = array();
