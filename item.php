@@ -14,6 +14,11 @@
 			<?php
 				$item = new Item($_GET["id"]);
 				create_data_vars($item);
+				if($name == '')
+				{
+					echo "Item not found.";
+					exit();
+				}
 				
 				$already_viewed = false;
 				
