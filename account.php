@@ -18,7 +18,7 @@
 					<td><a href="logout.php">Log Out</a></td>
 				</tr>
 				<tr>
-					<td><a href="#">Change Password</a></td>
+					<td><a href="change_password.php">Change Password</a></td>
 				</tr>
 			</table>
 		</section>

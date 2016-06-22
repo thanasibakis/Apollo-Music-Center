@@ -18,7 +18,7 @@
 		<?php include "include/header.php"; ?>
 		<section>
 			<h3>Login</h3>
-			<?php if(isset($_GET["err_msg"])) { echo $_GET["err_msg"]; } ?>
+			<?php if(isset($_GET["message"])) { echo $_GET["err_msg"]; } ?>
 			<form method="post" action="process_user.php">
 				<input type="hidden" name="action" value="login"></input>
 				<table class="card centered">
