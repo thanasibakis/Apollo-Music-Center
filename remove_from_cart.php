@@ -4,7 +4,7 @@
 	if(isset($_POST["id"]))
 	{
 		$id = htmlentities($_POST["id"]);
-		$index = get_index_of_item_in_cart(new Item($id);
+		$index = get_index_of_item_in_cart(new Item($id));
 		$_SESSION["cart"][$index]->update_quantity_in_cart(-1);
 		if($_SESSION["cart"][$index]->get_quantity_in_cart() == 0)
 		{
