@@ -5,7 +5,7 @@
 	{
 		header("Location: index.php");
 		exit();
-	}
+	}	
 ?>
 <!doctype html>
 <html>
@@ -15,16 +15,23 @@
 		<title>Apollo Music Center</title>
 	</head>
 	<body>
+		<?php
+			if(isset($_GET["message"]))
+			{
+				$message = htmlentities($_GET["message"]);
+				$username = htmlentities($_GET["username"]);
+			}
+		?>
 		<?php include "include/header.php"; ?>
 		<section>
 			<h3>Login</h3>
-			<?php if(isset($_GET["message"])) { echo $_GET["err_msg"]; } ?>
+			<?php if(isset($message)) { echo $message; } ?>
 			<form method="post" action="process_user.php">
 				<input type="hidden" name="action" value="login"></input>
 				<table class="card centered">
 					<tr>
 						<td>Username:</td>
-						<td><input type="text" name="username" required></input></td>
+						<td><input type="text" name="username" value="<?php echo $username; ?>" required></input></td>
 					</tr>
 					<tr>
 						<td>Password:</td>
@@ -43,7 +50,7 @@
 				<table class="card centered">
 					<tr>
 						<td>Username:</td>
-						<td><input type="text" name="username" required></input></td>
+						<td><input type="text" name="username" value="<?php echo $username; ?>" required></input></td>
 					</tr>
 					<tr>
 						<td>Password:</td>

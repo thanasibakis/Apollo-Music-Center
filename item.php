@@ -25,7 +25,8 @@
 		<?php include "include/header.php"; ?>
 		<section>
 			<?php
-				$item = new Item($_GET["id"]);
+				$id = htmlentities($_GET["id"]);
+				$item = new Item($id);
 				create_data_vars($item);
 				if($name == '')
 				{

@@ -26,36 +26,31 @@
 		<?php include "include/header.php"; ?>
 		<section>
 			<h3>Your Cart (<?php echo count_cart(); ?>)</h3>
-			
-				<?php
-					$cart = array_reverse($_SESSION["cart"]);
+			<?php
+				$cart = array_reverse($_SESSION["cart"]);
+				
+				if(isset($_POST["checkout"])) // enter checkout mode
+				{
+					include "include/customer_info_form.php";
+				}
+				else // enter cart-view mode
+				{
+					if(count_cart() > 0) // show option to enter checkout mode
+					{
+						include "include/checkout_button_form.php";
+					} 
 					
-					if(isset($_POST["checkout"])) // enter checkout mode
+					echo "<div class='centered'>";
+					foreach($cart as $item)
 					{
-						include "include/customer_info_form.php";
+						create_data_vars($item);
+						include "include/item_cart.php";
 					}
-					else // enter cart-view mode
-					{
-						if(count_cart() > 0) // show option to enter checkout mode
-						{
-							include "include/checkout_button_form.php";
-						} 
-						
-						echo "<div class='centered'>";
-						foreach($cart as $item)
-						{
-							create_data_vars($item);
-							include "include/item_cart.php";
-						}
-						echo "</div>";
-						
-						if(count($cart) == 0)
-						{
-							echo "Your cart is empty.";
-						}
-					}
-				?>
-			</div>
+					echo "</div>";
+					
+					if(count($cart) == 0) { echo "Your cart is empty."; }
+				}
+			?>
 		</section>
 	</body>
 </html>

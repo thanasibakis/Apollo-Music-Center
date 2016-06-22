@@ -25,6 +25,30 @@ if(!isset($_SESSION["cart"]))
 	$_SESSION["cart"] = array();
 }
 
+if(!function_exists('html_print_r'))
+{
+	function html_print_r($v, $n = '', $ret = false)
+	{
+		if(!isset($_GET["debug"]))
+		{
+			return;
+		}	
+		if($ret)
+		{
+			ob_start();
+		}	
+		echo $n.'<pre>';
+		print_r($v);
+		echo '</pre>'."\n";
+		if($ret)
+		{
+			$result = ob_get_contents();
+			ob_end_clean();
+			return $result;
+		}
+	}
+}
+
 function refValues($arr)
 {
 	/* Creates an array of references for call_user_func_array to call mysqli_stmt_bind_param in sql_procedure */

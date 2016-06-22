@@ -1,4 +1,6 @@
-<?php include_once "include/setup.php"; ?>
+<?php
+	include_once "include/setup.php";
+?>
 <!doctype html>
 <html>
 	<head>
@@ -7,12 +9,13 @@
 		<title>Apollo Music Center</title>
 	</head>
 	<body>
+		<?php $name = htmlentities($_GET["name"]); ?>
 		<?php include "include/header.php"; ?>
 		<section>
-			<h3>Results for "<?php echo $_GET["name"]; ?>"</h3>
+			<h3>Results for "<?php echo $name; ?>"</h3>
 			<div class="centered">
 				<?php
-					$rows = sql_procedure("GetIDbyName", array($_GET["name"]), 's');
+					$rows = sql_procedure("GetIDbyName", array($name), 's');
 					foreach($rows as $row)
 					{
 						$id = $row["id"];
@@ -20,13 +23,9 @@
 						create_data_vars($item);
 						include "include/item_small.php";
 					}
-					
-					if(count($rows) == 0)
-					{
-						echo "No results.";
-					}
 				?>
 			</div>
+			<?php if(count($rows) == 0) { echo "No results."; } ?>
 		</section>
 	</body>
 </html>

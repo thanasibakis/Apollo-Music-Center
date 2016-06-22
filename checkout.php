@@ -24,12 +24,12 @@
 				$cart .= "{ID=$id; QUANTITY=$quantity_in_cart; NAME=$name}";
 			}
 			$user_id = $_SESSION["user"]["id"];
-			$first_name = $_POST["first_name"];
-			$last_name = $_POST["last_name"];
-			$street = $_POST["street"];
-			$city = $_POST["city"];
-			$card_number = $_POST["card_number"];
-			$card_exp_date = $_POST["card_exp_date"];
+			$first_name = htmlentities($_POST["first_name"]);
+			$last_name = htmlentities($_POST["last_name"]);
+			$street = htmlentities($_POST["street"]);
+			$city = htmlentities($_POST["city"]);
+			$card_number = htmlentities($_POST["card_number"]);
+			$card_exp_date = htmlentities($_POST["card_exp_date"]);
 			$cost = total_cart_cost();
 			
 			sql_procedure("AddTransaction", array($user_id, $first_name, $last_name, $street, $city, $card_number, $card_exp_date, $cost, $cart), "issssssds");

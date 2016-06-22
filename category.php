@@ -9,9 +9,10 @@
 	<body>
 		<?php include "include/header.php"; ?>
 		<section>
-			<h3><?php echo $_GET["category"]; ?></h3>
+			<?php $category = htmlentities($_GET["category"]); ?>
+			<h3><?php echo $category; ?></h3>
 			<?php
-				$items = get_category_items($_GET["category"]);
+				$items = get_category_items($category);
 				
 				echo "<div class='centered'>";
 				foreach($items as $item)
@@ -21,10 +22,7 @@
 				}
 				echo "</div>";
 				
-				if(count($items) == 0)
-				{
-					echo "No items found.";
-				}
+				if(count($items) == 0) { echo "No items found."; }
 			?>
 		</section>
 	</body>

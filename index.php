@@ -43,15 +43,11 @@
 								include "include/item_small.php";
 								echo "</td>";
 							}
-							
-							if(count($_SESSION["recent"]) == 0)
-							{
-								echo "Nothing viewed recently.";
-							}
 						?>
 					</tr>
 				</table>
 			</div>
+			<?php if(count($_SESSION["recent"]) == 0) { echo "Nothing viewed recently."; } ?>
 		</section>
 	</body>
 </html>

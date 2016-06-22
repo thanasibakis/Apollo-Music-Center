@@ -3,10 +3,10 @@
 	
 	if(isset($_POST["id"]))
 	{
-		$id = $_POST["id"];
+		$id = htmlentities($_POST["id"]);
 		$item = new Item($id);
 		$index = get_index_of_item_in_cart($item);
-		if($index == -1)
+		if($index == -1 && $item->get_quantity_in_cart() < $item->get_quantity_available())
 		{
 			$_SESSION["cart"][] = $item;
 			$item->update_quantity_in_cart(1);

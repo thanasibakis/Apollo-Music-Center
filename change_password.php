@@ -10,10 +10,16 @@
 		<title>Apollo Music Center</title>
 	</head>
 	<body>
+		<?php
+			if(isset($_GET["message"]))
+			{
+				$message = htmlentities($_GET["message"]);
+			}
+		?>
 		<?php include "include/header.php"; ?>
 		<section>
 			<h3>Change Password</h3>
-			<?php if(isset($_GET["message"])) { echo $_GET["message"]; } ?>
+			<?php if(isset($message)) { echo $message; } ?>
 			<form method="post" action="process_user.php">
 				<input type="hidden" name="action" value="change password"></input>
 				<table class="card centered">

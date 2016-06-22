@@ -1,10 +1,12 @@
 <?php
 	include_once "include/setup.php";
 	
-	if($_POST["action"] == "login")
+	$action = htmlentities($_POST["action"]);
+	
+	if($action == "login")
 	{	
-		$username = $_POST["username"];
-		$password = $_POST["password"];
+		$username = htmlentities($_POST["username"]);
+		$password = htmlentities($_POST["password"]);
 		
 		$rows = sql_procedure("CheckLoginCredentials", array($username, $password), "ss");
 		$login_correct = $rows[0]["result"];
@@ -17,20 +19,20 @@
 			exit();
 		} else
 		{
-			header("Location: login.php?message=Incorrect credentials.");
+			header("Location: login.php?message=Incorrect credentials.&username=$username");
 			exit();
 		}
-	} elseif($_POST["action"] == "sign up")
+	} elseif($action == "sign up")
 	{
-		$username = $_POST["username"];
-		$password = $_POST["password"];
+		$username = htmlentities($_POST["username"]);
+		$password = htmlentities($_POST["password"]);
 		
 		$rows = sql_procedure("DoesUserExist", array($username), 's');
 		$exists = $rows[0]["result"];
 		
 		if($exists)
 		{
-			header("Location: login.php?message=Username taken.");
+			header("Location: login.php?message=Username taken.&username=$username");
 			exit();
 		} else
 		{
@@ -41,11 +43,11 @@
 			header("Location: cart.php");
 			exit();
 		}
-	} elseif($_POST["action"] == "change password")
+	} elseif($action == "change password")
 	{
 		$username = $_SESSION["user"]["name"];
-		$old_password = $_POST["old_password"];
-		$new_password = $_POST["new_password"];
+		$old_password = htmlentities($_POST["old_password"]);
+		$new_password = htmlentities($_POST["new_password"]);
 		
 		sql_procedure("ChangePassword", array($username, $old_password, $new_password), "sss");
 		
