@@ -14,6 +14,7 @@
 		{
 			$rows = sql_procedure("GetUserID", array($username), 's');
 			$user_id = $rows[0]["user_id"];
+			session_regenerate_id(); // put before setting session user data below!
 			$_SESSION["user"] = array("name" => $username, "id" => $user_id);
 			header("Location: cart.php");
 			exit();

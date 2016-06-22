@@ -4,10 +4,31 @@
 
 include_once "credentials.php";
 
-if(isset($_GET["debug"]))
+if(defined(DEBUG_MODE) && DEBUG_MODE == 1)
 {
 	error_reporting(-1);
 	ini_set('display_errors', 'On');
+}
+
+function html_print_r($v, $n = '', $ret = false)
+{
+	if(defined(DEBUG_MODE) && DEBUG_MODE != 1)
+	{
+		return;
+	}	
+	if($ret)
+	{
+		ob_start();
+	}	
+	echo $n.'<pre>';
+	print_r($v);
+	echo '</pre>'."\n";
+	if($ret)
+	{
+		$result = ob_get_contents();
+		ob_end_clean();
+		return $result;
+	}
 }
 
 if(!isset($_SESSION))
@@ -23,30 +44,6 @@ if(!isset($_SESSION["recent"]))
 if(!isset($_SESSION["cart"]))
 {
 	$_SESSION["cart"] = array();
-}
-
-if(!function_exists('html_print_r'))
-{
-	function html_print_r($v, $n = '', $ret = false)
-	{
-		if(!isset($_GET["debug"]))
-		{
-			return;
-		}	
-		if($ret)
-		{
-			ob_start();
-		}	
-		echo $n.'<pre>';
-		print_r($v);
-		echo '</pre>'."\n";
-		if($ret)
-		{
-			$result = ob_get_contents();
-			ob_end_clean();
-			return $result;
-		}
-	}
 }
 
 function refValues($arr)
