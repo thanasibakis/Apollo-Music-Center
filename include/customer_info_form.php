@@ -1,5 +1,5 @@
 <form method="post" action="checkout.php">
-	<table id="customer_info_form">
+	<table class="card centered" id="customer_info_form">
 		<tr>
 			<td>Name:</td>
 			<td><input type="text" name="first_name" id="name" placeholder="First" required></input></td>

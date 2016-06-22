@@ -1,5 +1,5 @@
 <a href="item.php?id=<?php echo $id; ?>">
-	<div class="item_cart">
+	<div class="card item">
 		<h3><?php echo trim(substr($name, 0, 24)); if(strlen($name) > 24){ echo '...'; } ?> (<?php echo $quantity_in_cart; ?>)</h3>
 		<img src="<?php echo $image; ?>" alt="Hmmm... this should be <?php echo $name; ?>"/>
 		<p>$<?php echo "$price * $quantity_in_cart = $$total_price"; ?></p>

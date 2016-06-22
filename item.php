@@ -2,11 +2,24 @@
 <!doctype html>
 <html>
 	<head>
-		<link rel="stylesheet" href="stylesheets/section.css" type="text/css" media="screen"/>
-		<link rel="stylesheet" href="stylesheets/header.css" type="text/css" media="screen"/>
-		<link rel="stylesheet" href="stylesheets/theme.css" type="text/css" media="screen"/>
-		<link rel="stylesheet" href="stylesheets/item.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="stylesheets/position.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="stylesheets/design.css" type="text/css" media="screen"/>
 		<title>Apollo Music Center</title>
+		
+		<style>
+			section img
+			{
+				width: 450px;
+				min-height: 450px;
+				float: left;
+			}
+        	
+			section table
+			{
+				width: 400px;
+				float: right;
+			}
+		</style>
 	</head>
 	<body>
 		<?php include "include/header.php"; ?>
@@ -42,8 +55,8 @@
 				}
 			?>
 			<h3><?php echo $name; ?></h3>
-			<img src="<?php echo $image; ?>" alt="Hmmm... this should be <?php echo $name; ?>"/>
-			<table>
+			<img class="card" src="<?php echo $image; ?>" alt="Hmmm... this should be <?php echo $name; ?>"/>
+			<table class="card">
 				<tr>
 					<td><?php echo $description; ?></td>
 				</tr>
@@ -58,10 +71,15 @@
 				</tr>
 				<tr>
 					<td>
-						<form method="post" action="add_to_cart.php">
-							<input type="hidden" name="id" value="<?php echo $id; ?>">
-							<input type="submit" value="Add to Cart"></input>
-						</form>
+						<?php
+							if(isset($_SESSION["user"]))
+							{
+								include "include/add_to_cart_form.php";
+							} else
+							{
+								echo "To add this item to your cart, please <a href='login.php' style='color:#e6ac00'>log in</a>.";
+							}
+						?>
 					</td>
 				</tr>
 			</table>

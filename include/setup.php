@@ -37,20 +37,14 @@ function refValues($arr)
 function sql_procedure($procedure, $args=array(), $types='')
 {
 	// set up db connection
-	global $host;
-	global $user;
-	global $password;
-	global $db;
-	global $port;
-	
 	$link = mysqli_init();
 	$success = mysqli_real_connect(
 	   $link, 
-	   $host, 
-	   $user, 
-	   $password, 
-	   $db,
-	   $port
+	   DBHOST, 
+	   DBUSER, 
+	   DBPASS, 
+	   DB,
+	   DBPORT
 	);
 	
 	// create a valid parameterized call statement from the procedure name
@@ -120,13 +114,13 @@ class Item
 	function get_name()
 	{
 		$rows = sql_procedure("GetColumnByID", array("name", $this->get_id()), "ss");
-		return $rows[0]["procedureResult"];
+		return $rows[0]["col"];
 	}
 	
 	function get_price_each()
 	{
 		$rows = sql_procedure("GetColumnByID", array("price", $this->get_id()), "ss");
-		$price = $rows[0]["procedureResult"];
+		$price = $rows[0]["col"];
 		return number_format($price, 2, '.', '');
 	}
 	
@@ -139,19 +133,19 @@ class Item
 	function get_image_location()
 	{
 		$rows = sql_procedure("GetColumnByID", array("image_location", $this->get_id()), "ss");
-		return $rows[0]["procedureResult"];
+		return $rows[0]["col"];
 	}
 	
 	function get_description()
 	{
 		$rows = sql_procedure("GetColumnByID", array("description", $this->get_id()), "ss");
-		return $rows[0]["procedureResult"];
+		return $rows[0]["col"];
 	}
 	
 	function get_quantity_available()
 	{
 		$rows = sql_procedure("GetColumnByID", array("quantity_available", $this->get_id()), "ss");
-		return $rows[0]["procedureResult"];
+		return $rows[0]["col"];
 	}
 	
 	function get_quantity_in_cart()
@@ -172,10 +166,11 @@ class Item
 
 function get_index_of_item_in_cart($item)
 {
-	$count = count($_SESSION["cart"]);
+	$cart = $_SESSION["cart"];
+	$count = count($cart);
 	for($i = 0; $i < $count; $i++)
 	{
-		if(($_SESSION["cart"])[$i]->get_id() == $item->get_id())
+		if($cart[$i]->get_id() == $item->get_id())
 		{
 			return $i;
 		}
@@ -200,7 +195,7 @@ function total_cart_cost()
 	{
 		$total += $item->get_total_price();
 	}
-	return number_format($total, 2, '.', '');;
+	return number_format($total, 2, '.', '');
 }
 
 function get_featured_items()

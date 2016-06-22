@@ -1,13 +1,26 @@
-<?php include_once "include/setup.php"; ?>
+<?php
+	include_once "include/setup.php"; 
+	include_once "include/exit_if_not_logged_in.php";
+?>
 <!doctype html>
 <html>
 	<head>
-		<link rel="stylesheet" href="stylesheets/section.css" type="text/css" media="screen"/>
-		<link rel="stylesheet" href="stylesheets/header.css" type="text/css" media="screen"/>
-		<link rel="stylesheet" href="stylesheets/theme.css" type="text/css" media="screen"/>
-		<link rel="stylesheet" href="stylesheets/cart.css" type="text/css" media="screen"/>
-		<link rel="stylesheet" href="stylesheets/item_small_cart.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="stylesheets/position.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="stylesheets/design.css" type="text/css" media="screen"/>
 		<title>Apollo Music Center</title>
+		
+		<style>
+			#customer_info_form
+			{
+				text-align: right;
+			}
+			
+			#checkout_button_form
+			{
+				display: inline;
+				margin-left: 10px;
+			}
+		</style>
 	</head>
 	<body>
 		<?php include "include/header.php"; ?>
@@ -28,7 +41,7 @@
 							include "include/checkout_button_form.php";
 						} 
 						
-						echo "<div class='item_grid'>";
+						echo "<div class='centered'>";
 						foreach($cart as $item)
 						{
 							create_data_vars($item);

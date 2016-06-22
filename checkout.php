@@ -1,10 +1,18 @@
-<?php include_once "include/setup.php"; ?>
+<?php
+	include_once "include/setup.php"; 
+	include_once "include/exit_if_not_logged_in.php";
+	
+	if(!isset($_POST["first_name"]))
+	{
+		header("Location: index.php");
+		exit();
+	}
+?>
 <!doctype html>
 <html>
 	<head>
-		<link rel="stylesheet" href="stylesheets/section.css" type="text/css" media="screen"/>
-		<link rel="stylesheet" href="stylesheets/header.css" type="text/css" media="screen"/>
-		<link rel="stylesheet" href="stylesheets/theme.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="stylesheets/position.css" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="stylesheets/design.css" type="text/css" media="screen"/>
 		<title>Apollo Music Center</title>
 	</head>
 	<body>
@@ -15,6 +23,7 @@
 				create_data_vars($item);
 				$cart .= "{ID=$id; QUANTITY=$quantity_in_cart; NAME=$name}";
 			}
+			$user_id = $_SESSION["user"]["id"];
 			$first_name = $_POST["first_name"];
 			$last_name = $_POST["last_name"];
 			$street = $_POST["street"];
@@ -23,7 +32,7 @@
 			$card_exp_date = $_POST["card_exp_date"];
 			$cost = total_cart_cost();
 			
-			sql_procedure("AddTransaction", array($first_name, $last_name, $street, $city, $card_number, $card_exp_date, $cost, $cart), "ssssssds");
+			sql_procedure("AddTransaction", array($user_id, $first_name, $last_name, $street, $city, $card_number, $card_exp_date, $cost, $cart), "issssssds");
 			$row = sql_procedure("GetOrderNumber", array($cart, $card_number), "ss");
 			
 			$order_number = $row[0]["order_number"];

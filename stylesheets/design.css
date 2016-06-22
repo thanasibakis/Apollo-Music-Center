@@ -12,20 +12,14 @@ a
 	text-decoration: none;
 }
 
-header
-{
-	background-color: white;
-	border-radius: 2px;
-	box-shadow: 1px 1px 4px #d3d3d3;
-}
-
 body
 {
 	background-color: #f6f6f6;
 }
 
-.item_small, .item_cart, #customer_info_form
+.card
 {
+	padding: 10px;
 	background-color: white;
 	border-radius: 2px;
 	box-shadow: 1px 1px 4px #d3d3d3;

@@ -1,0 +1,89 @@
+header
+{
+	width: 100%;
+	height: 107px;
+}
+
+header #top
+{
+	height: 40px;
+	width: 100%;
+}
+
+header h1
+{
+	float: left;
+	margin: 10px 0 0 10px;
+}
+
+header form
+{
+	float: right;
+	margin: 10px 10px 0 0;
+}
+
+header #navigation
+{
+	height: 40px;
+	width: 100%;
+	text-align: center;
+	margin-top: 8px;
+	table-layout: fixed;
+}
+
+.item
+{
+	width: 300px;
+	height: 330px;
+	padding: 10px;
+	margin-left: 20px;
+	margin-bottom: 20px;
+	display: inline-block;
+	text-align: center;
+}
+
+.item h3
+{
+	margin-top: 0;
+}
+
+.item img
+{
+	width: 200px;
+	min-height: 200px;
+}
+
+.item p
+{
+	height: 18px;
+}
+
+.item table
+{
+	width: 100%;
+	text-align: center;
+	table-layout: fixed;
+}
+
+body
+{
+	width: 950px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+section
+{
+	margin: 20px;
+}
+
+.centered
+{
+	margin: auto;
+	text-align: center; /* because the inline-block divs work like text */
+}
+
+.scrolled
+{
+	overflow-x: overlay;
+}
