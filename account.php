@@ -30,18 +30,26 @@
 						<?php
 							$rows = sql_procedure("GetMostRecentOrder", array($_SESSION["user"]["id"]), 'd');
 							$order_data = $rows[0]["order_contents"];
+							$order_data = json_decode($order_data);
 							$order = array();
 							
-							while(strpos($order_data, '{') !== false)
+							// while(strpos($order_data, '{') !== false)
+							// {
+							// 	$pos_start = strpos($order_data, '{');
+							// 	$pos_end = strpos($order_data, '}');
+							// 	$item_data = substr($order_data, $pos_start + 1, $pos_end - ($pos_start + 1));
+							// 	preg_match("/ID=(.+); QUANTITY=(.+)/", $item_data, $match);
+							// 	$id = $match[1];
+							// 	$order[] = new Item($id);
+							// 	$order_data = substr($order_data, $pos_end + 1);
+							// }
+							
+							foreach($order_data as $id => $data)
 							{
-								$pos_start = strpos($order_data, '{');
-								$pos_end = strpos($order_data, '}');
-								$item_data = substr($order_data, $pos_start + 1, $pos_end - ($pos_start + 1));
-								preg_match("/ID=(.+); QUANTITY=(.+)/", $item_data, $match);
-								$id = $match[1];
-								$order[] = new Item($id);
-								$order_data = substr($order_data, $pos_end + 1);
+								$item = new Item($id);
+								$order[] = $item;
 							}
+							
 							
 							foreach($order as $item)
 							{
