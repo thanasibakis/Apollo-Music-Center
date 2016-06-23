@@ -33,17 +33,6 @@
 							$order_data = json_decode($order_data);
 							$order = array();
 							
-							// while(strpos($order_data, '{') !== false)
-							// {
-							// 	$pos_start = strpos($order_data, '{');
-							// 	$pos_end = strpos($order_data, '}');
-							// 	$item_data = substr($order_data, $pos_start + 1, $pos_end - ($pos_start + 1));
-							// 	preg_match("/ID=(.+); QUANTITY=(.+)/", $item_data, $match);
-							// 	$id = $match[1];
-							// 	$order[] = new Item($id);
-							// 	$order_data = substr($order_data, $pos_end + 1);
-							// }
-							
 							foreach($order_data as $id => $data)
 							{
 								$item = new Item($id);
@@ -58,9 +47,7 @@
 								echo "<td>";
 								include "include/item_small.php";
 								echo "</td>";
-							}
-							
-							
+							}	
 						?>
 					</tr>
 				</table>

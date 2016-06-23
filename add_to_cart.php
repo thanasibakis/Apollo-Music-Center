@@ -3,7 +3,7 @@
 	
 	if(isset($_POST["id"]))
 	{
-		$id = htmlentities($_POST["id"]);
+		$id = $_POST["id"];
 		$item = new Item($id);
 		$index = get_index_of_item_in_cart($item);
 		

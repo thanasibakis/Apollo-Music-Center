@@ -41,11 +41,6 @@ if(!isset($_SESSION["recent"]))
 	$_SESSION["recent"] = array();
 }
 
-if(!isset($_SESSION["cart"]))
-{
-	$_SESSION["cart"] = array();
-}
-
 function refValues($arr)
 {
 	/* Creates an array of references for call_user_func_array to call mysqli_stmt_bind_param in sql_procedure */
@@ -106,14 +101,14 @@ function create_data_vars($item_object)
 	global $quantity_in_cart;
 	global $total_price;
 	
-	$name = $item_object->get_name();
-	$price = $item_object->get_price_each();
-	$description = $item_object->get_description();
-	$image = $item_object->get_image_location();
-	$quantity = $item_object->get_quantity_available();
-	$id = $item_object->get_id();
-	$quantity_in_cart = $item_object->get_quantity_in_cart();
-	$total_price = $item_object->get_total_price();
+	$name = htmlentities($item_object->get_name());
+	$price = htmlentities($item_object->get_price_each());
+	$description = htmlentities($item_object->get_description());
+	$image = htmlentities($item_object->get_image_location());
+	$quantity = htmlentities($item_object->get_quantity_available());
+	$id = htmlentities($item_object->get_id());
+	$quantity_in_cart = htmlentities($item_object->get_quantity_in_cart());
+	$total_price = htmlentities($item_object->get_total_price());
 }
 
 class Item
@@ -123,7 +118,7 @@ class Item
 	
 	function __construct($id)
 	{
-		$this->id = $id;
+		$this->id = (int)$id;
 		$this->quantity_in_cart = 0;
 	}
 	

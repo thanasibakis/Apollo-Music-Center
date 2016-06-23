@@ -84,6 +84,31 @@
 		$json = json_encode($items_data);
 		return $json;
 	}
+	
+	function api_add_transaction($json_data)
+	{
+		$data_obj = json_decode($json_data);
+		$data = array();
+		foreach ($data_obj as $a => $b)
+		{
+			$data[trim($a)] = trim($b);
+		}
+		$params = array("user_id", "first_name", "last_name", "street", "city", "card_number", "card_exp_date", "cost", "cart");
+		foreach($params as $param)
+		{
+			if(!isset($data[$param]))
+			{
+				header("HTTP/1.0 400 INVALID INPUT");
+				exit();
+			}
+		}
+		
+		sql_procedure("AddTransaction", $data, "issssssds");
+		$row = sql_procedure("GetOrderNumber", array($cart, $card_number), "ss");
+		
+		$order_number = $row[0]["order_number"];
+		return json_encode(array("order_number" => $order_number));
+	}
 
 	$method = $_SERVER["REQUEST_METHOD"];
 	$request = explode('/', trim($_SERVER["REQUEST_URI"], '/'));
@@ -112,9 +137,19 @@
 				echo api_search_for_item($name);
 				break;
 			default:
-				$json_data = array("error_message" => "No items found for category '$category'.");
-				$json = json_encode($json_data);
-				echo $json;
+				echo json_encode(array("error_message" => "Invalid action '$action'."));
+				break;
+		}
+	} elseif($method == "POST")
+	{
+		switch($action)
+		{
+			case "transaction":
+				$post_data = file_get_contents("php://input");
+				api_add_transaction($post_data);
+				break;
+			default:
+				echo json_encode(array("error_message" => "Invalid action '$action'."));
 				break;
 		}
 	}

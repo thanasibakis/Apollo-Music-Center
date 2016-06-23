@@ -16,6 +16,7 @@
 			$user_id = $rows[0]["user_id"];
 			session_regenerate_id(); // put before setting session user data below!
 			$_SESSION["user"] = array("name" => $username, "id" => $user_id);
+			$_SESSION["cart"] = array(); // could theoretically load last time's cart from database here
 			header("Location: cart.php");
 			exit();
 		} else
@@ -40,7 +41,9 @@
 			sql_procedure("AddUser", array($username, $password), "ss");
 			$rows = sql_procedure("GetUserID", array($username), 's');
 			$user_id = $rows[0]["user_id"];
+			session_regenerate_id(); // put before setting session user data below!
 			$_SESSION["user"] = array("name" => $username, "id" => $user_id);
+			$_SESSION["cart"] = array();
 			header("Location: cart.php");
 			exit();
 		}

@@ -24,19 +24,18 @@
 				create_data_vars($item);
 				$item_data = array("quantity" => $quantity_in_cart, "name" => $name);
 				$json_data["$id"] = $item_data;
-				// $cart .= "{ID=$id; QUANTITY=$quantity_in_cart; NAME=$name}";
 				sql_procedure("UpdateQuantity", array($id, $item->get_quantity_available() - $quantity_in_cart), "dd");
 			}
 			
 			$cart = json_encode($json_data);
 			
 			$user_id = $_SESSION["user"]["id"];
-			$first_name = htmlentities($_POST["first_name"]);
-			$last_name = htmlentities($_POST["last_name"]);
-			$street = htmlentities($_POST["street"]);
-			$city = htmlentities($_POST["city"]);
-			$card_number = htmlentities($_POST["card_number"]);
-			$card_exp_date = htmlentities($_POST["card_exp_date"]);
+			$first_name = $_POST["first_name"];
+			$last_name = $_POST["last_name"];
+			$street = $_POST["street"];
+			$city = $_POST["city"];
+			$card_number = $_POST["card_number"];
+			$card_exp_date = $_POST["card_exp_date"];
 			$cost = total_cart_cost();
 			
 			sql_procedure("AddTransaction", array($user_id, $first_name, $last_name, $street, $city, $card_number, $card_exp_date, $cost, $cart), "issssssds");
