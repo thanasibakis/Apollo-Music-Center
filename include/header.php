@@ -29,7 +29,7 @@
 				<?php
 					if(isset($_SESSION["user"]))
 					{
-						echo "<a href='account.php'>" . $_SESSION["user"]["name"] . "'s Account</a>";
+						echo "<a href='account.php'>" . htmlentities($_SESSION["user"]["name"]) . "'s Account</a>";
 					} else
 					{
 						echo "<a href='login.php'>Log In / Sign Up</a>";

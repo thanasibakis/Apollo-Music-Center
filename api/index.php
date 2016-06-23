@@ -62,6 +62,22 @@
 		return $json;
 	}
 	
+	function api_get_featured_items()
+	{
+		$items = get_featured_items();
+		$items_data = array();
+		
+		for($i = 0; $i < count($items); $i++)
+		{
+			$item = $items[$i];
+			$item_data = prepare_item_array_for_json($item);
+			$items_data[] = $item_data;
+		}
+		
+		$json = json_encode($items_data);
+		return $json;
+	}
+	
 	function api_search_for_item($name)
 	{
 		$items_data = array();
@@ -131,6 +147,9 @@
 			case "category":
 				$category = $request[2];
 				echo api_get_category_items($category);
+				break;
+			case "featured":
+				echo api_get_featured_items();
 				break;
 			case "search":
 				$name = $request[2];

@@ -5,8 +5,12 @@
 	
 	if($action == "login")
 	{	
-		$username = htmlentities($_POST["username"]);
-		$password = htmlentities($_POST["password"]);
+		$username = $_POST["username"];
+		$password = $_POST["password"];
+		
+		$rows = sql_procedure("GetSalt", array($username), 's');
+		$salt = $rows[0]["salt"];
+		$password = crypt($password, $salt);
 		
 		$rows = sql_procedure("CheckLoginCredentials", array($username, $password), "ss");
 		$login_correct = $rows[0]["result"];
@@ -26,8 +30,8 @@
 		}
 	} elseif($action == "sign up")
 	{
-		$username = htmlentities($_POST["username"]);
-		$password = htmlentities($_POST["password"]);
+		$username = $_POST["username"];
+		$password = $_POST["password"];
 		
 		$rows = sql_procedure("DoesUserExist", array($username), 's');
 		$exists = $rows[0]["result"];
@@ -38,7 +42,9 @@
 			exit();
 		} else
 		{
-			sql_procedure("AddUser", array($username, $password), "ss");
+			$salt = uniqid();
+			$password = crypt($password, $salt);
+			sql_procedure("AddUser", array($username, $password, $salt), "sss");
 			$rows = sql_procedure("GetUserID", array($username), 's');
 			$user_id = $rows[0]["user_id"];
 			session_regenerate_id(); // put before setting session user data below!
@@ -50,8 +56,13 @@
 	} elseif($action == "change password")
 	{
 		$username = $_SESSION["user"]["name"];
-		$old_password = htmlentities($_POST["old_password"]);
-		$new_password = htmlentities($_POST["new_password"]);
+		$old_password = $_POST["old_password"];
+		$new_password = $_POST["new_password"];
+		
+		$rows = sql_procedure("GetSalt", array($username), 's');
+		$salt = $rows[0]["salt"];
+		$old_password = crypt($old_password, $salt);
+		$new_password = crypt($new_password, $salt);
 		
 		sql_procedure("ChangePassword", array($username, $old_password, $new_password), "sss");
 		
