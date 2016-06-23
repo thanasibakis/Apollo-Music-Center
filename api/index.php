@@ -109,7 +109,7 @@
 		{
 			$data[trim($a)] = trim($b);
 		}
-		
+		$params = array("username", "password", "first_name", "last_name", "street", "city", "card_number", "card_exp_date", "cost", "cart");
 		foreach($params as $param)
 		{
 			if(!isset($data[$param]))
