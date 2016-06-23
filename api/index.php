@@ -109,7 +109,7 @@
 		{
 			$data[trim($a)] = trim($b);
 		}
-		$params = array("user_id", "first_name", "last_name", "street", "city", "card_number", "card_exp_date", "cost", "cart");
+		
 		foreach($params as $param)
 		{
 			if(!isset($data[$param]))
@@ -118,6 +118,24 @@
 				exit();
 			}
 		}
+		$rows = sql_procedure("GetSalt", array($data["username"]), 's');
+		$salt = $rows[0]["salt"];
+		$data["password"] = crypt($data["password"], $salt);
+		
+		$rows = sql_procedure("CheckLoginCredentials", array($data["username"], $data["password"]), "ss");
+		$result = $rows[0]["result"];
+		
+		if(!$result)
+		{
+			header("HTTP/1.0 403 FORBIDDEN");
+			exit();
+		}
+		
+		$rows = sql_procedure("GetUserID", array($data["username"]), 's');
+		$user_id = $rows[0]["user_id"];
+		unset($data["username"]);
+		unset($data["password"]);
+		$data = array("user_id" => $user_id) + $data;
 		
 		sql_procedure("AddTransaction", $data, "issssssds");
 		$row = sql_procedure("GetOrderNumber", array($cart, $card_number), "ss");
