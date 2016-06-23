@@ -22,6 +22,7 @@
 			{
 				create_data_vars($item);
 				$cart .= "{ID=$id; QUANTITY=$quantity_in_cart; NAME=$name}";
+				sql_procedure("UpdateQuantity", array($id, $item->get_quantity_available() - $quantity_in_cart), "dd");
 			}
 			$user_id = $_SESSION["user"]["id"];
 			$first_name = htmlentities($_POST["first_name"]);
