@@ -4,6 +4,42 @@
 	
 	header("Content-Type: application/json");
 	
+	function validate_input($json_data, $params)
+	{
+		$data_obj = json_decode($json_data);
+		$data = array();
+		foreach ($data_obj as $a => $b)
+		{
+			$data[trim($a)] = trim($b);
+		}
+		foreach($params as $param)
+		{
+			if(!isset($data[$param]))
+			{
+				return array("HTTP/1.0 400 INVALID INPUT");
+			}
+		}
+		$rows = sql_procedure("GetSalt", array($data["username"]), 's');
+		$salt = $rows[0]["salt"];
+		$data["password"] = crypt($data["password"], $salt);
+		
+		$rows = sql_procedure("CheckLoginCredentials", array($data["username"], $data["password"]), "ss");
+		$result = $rows[0]["result"];
+		
+		if(!$result)
+		{
+			return array("HTTP/1.0 403 FORBIDDEN");
+		}
+		
+		$rows = sql_procedure("GetUserID", array($data["username"]), 's');
+		$user_id = $rows[0]["user_id"];
+		unset($data["username"]);
+		unset($data["password"]);
+		$data = array("user_id" => $user_id) + $data;
+		
+		return array("200", $data);
+	}
+	
 	function api_get_item_by_id($id)
 	{
 		$item = new Item($id);
@@ -82,45 +118,37 @@
 	
 	function api_add_transaction($json_data)
 	{
-		$data_obj = json_decode($json_data);
-		$data = array();
-		foreach ($data_obj as $a => $b)
-		{
-			$data[trim($a)] = trim($b);
-		}
 		$params = array("username", "password", "first_name", "last_name", "street", "city", "state", "card_number", "card_exp_date", "cost", "cart");
-		foreach($params as $param)
-		{
-			if(!isset($data[$param]))
-			{
-				header("HTTP/1.0 400 INVALID INPUT");
-				exit();
-			}
-		}
-		$rows = sql_procedure("GetSalt", array($data["username"]), 's');
-		$salt = $rows[0]["salt"];
-		$data["password"] = crypt($data["password"], $salt);
+		$result = validate_input($json_data, $params);
 		
-		$rows = sql_procedure("CheckLoginCredentials", array($data["username"], $data["password"]), "ss");
-		$result = $rows[0]["result"];
-		
-		if(!$result)
+		if($result[0] != "200")
 		{
-			header("HTTP/1.0 403 FORBIDDEN");
+			header($result[0]);
 			exit();
 		}
 		
-		$rows = sql_procedure("GetUserID", array($data["username"]), 's');
-		$user_id = $rows[0]["user_id"];
-		unset($data["username"]);
-		unset($data["password"]);
-		$data = array("user_id" => $user_id) + $data;
+		$data = $result[1];
 		
 		sql_procedure("AddTransaction", $data, "isssssssds");
 		$row = sql_procedure("GetOrderNumber", array($cart, $card_number), "ss");
 		
 		$order_number = $row[0]["order_number"];
 		return json_encode(array("order_number" => $order_number));
+	}
+	
+	function api_set_cart($json_data)
+	{
+		$params = array("username", "password", "cart");
+		$result = validate_input($json_data, $params);
+		
+		if($result[0] != "200")
+		{
+			header($result[0]);
+			exit();
+		}
+		
+		$data = $result[1];
+		sql_procedure("SetUserCart", $data, "is");
 	}
 
 	$method = $_SERVER["REQUEST_METHOD"];
@@ -163,6 +191,10 @@
 			case "transaction":
 				$post_data = file_get_contents("php://input");
 				api_add_transaction($post_data);
+				break;
+			case "cart":
+				$post_data = file_get_contents("php://input");
+				api_set_cart($post_data);
 				break;
 			default:
 				echo json_encode(array("error_message" => "Invalid action '$action'."));
