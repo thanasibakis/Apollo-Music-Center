@@ -3,15 +3,10 @@
 	
 	if(isset($_POST["id"]))
 	{
-		$id = $_POST["id"];
-		$index = get_index_of_item_in_cart(new Item($id));
-		$_SESSION["cart"][$index]->update_quantity_in_cart(-1);
-		if($_SESSION["cart"][$index]->get_quantity_in_cart() == 0)
-		{
-			unset($_SESSION["cart"][$index]);
-			$_SESSION["cart"] = array_values($_SESSION["cart"]); // re-index the array because it does not have dynamic list-style functionality
-		}
+		remove_from_session_cart($id);
+		sql_procedure("SetUserCart", array($_SESSION["user"]["id"], cart_to_json()), "is");
 	}
 	
 	header("Location: cart.php");
+	exit();
 ?>

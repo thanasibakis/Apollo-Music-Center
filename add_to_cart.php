@@ -4,23 +4,12 @@
 	if(isset($_POST["id"]))
 	{
 		$id = $_POST["id"];
-		$item = new Item($id);
-		$index = get_index_of_item_in_cart($item);
-		
-			
-		if($index == -1)
-		{
-			$_SESSION["cart"][] = $item;
-			$item->update_quantity_in_cart(1);
-		} else
-		{
-			$item = $_SESSION["cart"][$index];
-			if($item->get_quantity_in_cart() < $item->get_quantity_available())
-			{
-				$item->update_quantity_in_cart(1);
-			}
-		}
-		
+	}
+	
+	if(isset($id))
+	{
+		add_to_session_cart($id);
+		sql_procedure("SetUserCart", array($_SESSION["user"]["id"], cart_to_json()), "is");
 	}
 	header("Location: cart.php");
 	exit();

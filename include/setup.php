@@ -178,6 +178,22 @@ class Item
 		}
 		return $this->get_quantity_in_cart();
 	}
+	
+	function to_json_array()
+	{
+		$item_data = array(
+			"name" => $this->get_name(),
+			"price" => $this->get_price_each(),
+			"description" => $this->get_description(),
+			"image" => $this->get_image_location(),
+			"quantity_available" => $this->get_quantity_available(),
+			"quantity_in_cart" => $this->get_quantity_in_cart(),
+			"id" => $this->get_id(),
+			"total_price" => $this->get_total_price()
+		);
+		
+		return $item_data;
+	}
 }
 
 function get_index_of_item_in_cart($item)
@@ -194,6 +210,37 @@ function get_index_of_item_in_cart($item)
 	return -1;
 }
 
+function add_to_session_cart($id)
+{
+	$item = new Item($id);
+	$index = get_index_of_item_in_cart($item);
+		
+	if($index == -1)
+	{
+		$_SESSION["cart"][] = $item;
+		$item->update_quantity_in_cart(1);
+	} else
+	{
+		$item = $_SESSION["cart"][$index];
+		if($item->get_quantity_in_cart() < $item->get_quantity_available())
+		{
+			$item->update_quantity_in_cart(1);
+		}
+	}
+}
+
+function remove_from_session_cart($id)
+{
+	$id = $_POST["id"];
+	$index = get_index_of_item_in_cart(new Item($id));
+	$_SESSION["cart"][$index]->update_quantity_in_cart(-1);
+	if($_SESSION["cart"][$index]->get_quantity_in_cart() == 0)
+	{
+		unset($_SESSION["cart"][$index]);
+		$_SESSION["cart"] = array_values($_SESSION["cart"]); // re-index the array because it does not have dynamic list-style functionality
+	}
+}
+
 function count_cart()
 {
 	$count = 0;
@@ -202,6 +249,40 @@ function count_cart()
 		$count += $item->get_quantity_in_cart();
 	}
 	return $count;
+}
+
+function cart_to_json()
+{
+	$json_data = array();
+	foreach($_SESSION["cart"] as $item)
+	{
+		$item_data = array("quantity" => $item->get_quantity_in_cart(), "name" => $item->get_name());
+		$json_data['' . $item->get_id() . ''] = $item_data;
+	}
+	return json_encode($json_data);
+}
+
+function json_to_cart($json)
+{
+	$json_obj = json_decode($json);
+	$json_data = array();
+	foreach ($json_obj as $a => $b)
+	{
+		$json_data[$a] = $b;
+	}
+	foreach($json_data as $id => $data_obj)
+	{
+		$data = array();
+		foreach ($data_obj as $a => $b)
+		{
+			$data[$a] = $b;
+		}
+		$quantity = $data["quantity"];
+		for($i = 0; $i < $quantity; $i++)
+		{
+			add_to_session_cart($id);
+		}
+	}
 }
 
 function total_cart_cost()

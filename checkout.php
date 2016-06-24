@@ -18,16 +18,13 @@
 	<body>
 		<?php
 			$cart = "";
-			$json_data = array();
 			foreach($_SESSION["cart"] as $item)
 			{
 				create_data_vars($item);
-				$item_data = array("quantity" => $quantity_in_cart, "name" => $name);
-				$json_data["$id"] = $item_data;
 				sql_procedure("UpdateQuantity", array($id, $item->get_quantity_available() - $quantity_in_cart), "dd");
 			}
 			
-			$cart = json_encode($json_data);
+			$cart = cart_to_json();
 			
 			$user_id = $_SESSION["user"]["id"];
 			$first_name = $_POST["first_name"];

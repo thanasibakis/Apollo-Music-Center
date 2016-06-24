@@ -4,27 +4,6 @@
 	
 	header("Content-Type: application/json");
 	
-	function prepare_item_array_for_json($item)
-	{
-		global $name;
-		global $price;
-		global $description;
-		global $image;
-		global $quantity;
-		global $id;
-		create_data_vars($item);
-		$item_data = array(
-			"name" => $name,
-			"price" => $price,
-			"description" => $description,
-			"image" => $image,
-			"quantity_available" => $quantity,
-			"id" => $id,
-		);
-		
-		return $item_data;
-	}
-	
 	function api_get_item_by_id($id)
 	{
 		$item = new Item($id);
@@ -33,7 +12,7 @@
 			$item_data = array("error_message" => "Item with id $id not found.");
 		} else
 		{
-			$item_data = prepare_item_array_for_json($item);
+			$item_data = $item->to_json_array();
 		}
 		
 		$json = json_encode($item_data);
@@ -53,7 +32,7 @@
 			for($i = 0; $i < count($items); $i++)
 			{
 				$item = $items[$i];
-				$item_data = prepare_item_array_for_json($item);
+				$item_data = $item->to_json_array();
 				$items_data[] = $item_data;
 			}
 		}
@@ -70,7 +49,7 @@
 		for($i = 0; $i < count($items); $i++)
 		{
 			$item = $items[$i];
-			$item_data = prepare_item_array_for_json($item);
+			$item_data = $item->to_json_array();
 			$items_data[] = $item_data;
 		}
 		
@@ -92,7 +71,7 @@
 			{
 				$id = $row["id"];
 				$item = new Item($id);
-				$item_data = prepare_item_array_for_json($item);
+				$item_data = $item->to_json_array();
 				$items_data[] = $item_data;
 			}
 		}

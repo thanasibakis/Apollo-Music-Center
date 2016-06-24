@@ -20,7 +20,12 @@
 			$user_id = $rows[0]["user_id"];
 			session_regenerate_id(); // put before setting session user data below!
 			$_SESSION["user"] = array("name" => $username, "id" => $user_id);
-			$_SESSION["cart"] = array(); // could theoretically load last time's cart from database here
+			$_SESSION["cart"] = array();
+			
+			$rows = sql_procedure("GetUserCart", array($user_id), 'i');
+			$cart_json = $rows[0]["cart"];
+			json_to_cart($cart_json);
+			
 			header("Location: cart.php");
 			exit();
 		} else
