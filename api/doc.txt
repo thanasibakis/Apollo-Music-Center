@@ -10,6 +10,10 @@ out:
 			  "id": idValue,
 			  "total_price": "priceValue"
 			}
+error:
+			{
+				"response": "errorMessage"
+			}
 
 request:	GET /api/category/category_value
 out:
@@ -45,6 +49,10 @@ out:
 				  "total_price": "priceValue"
 				}
 			]
+error:
+			{
+				"response": "errorMessage"
+			}
 
 request:	GET /api/featured
 out:
@@ -115,6 +123,10 @@ out:
 				  "total_price": "priceValue"
 				}
 			]
+error:
+			{
+				"response": "errorMessage"
+			}
 
 request:	POST /api/transaction
 in:
@@ -160,6 +172,10 @@ in:
 				  "total_price": "priceValue"
 				}
 			}
+error:
+			{
+				"response": "errorMessage"
+			}
 
 request:	POST /api/setcart
 in:
@@ -197,6 +213,10 @@ in:
 				  "total_price": "priceValue"
 				}
 			}
+error:
+			{
+				"response": "errorMessage"
+			}
 			
 request:	POST /api/getcart
 in:
@@ -210,4 +230,20 @@ out:
 					"quantity": quantityValue,
 					"name": "nameValue"
 				}
+			}
+			
+request		POST /api/validatelogin
+in:
+			{
+			  "username": "thanasi",
+			  "password": "tb"
+			}
+			
+out:
+			{
+				"response": "true | false"
+			}
+error:
+			{
+				"response": "errorMessage"
 			}

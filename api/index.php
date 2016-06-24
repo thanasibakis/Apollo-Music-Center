@@ -2,7 +2,8 @@
 	include_once "../credentials.php";
 	include_once "../include/setup.php";
 	
-	header("Content-Type: application/json");
+	define("HTTP_VER", "HTTP/1.1");
+	define("HTTP_OK", HTTP_VER . " 200 OK");
 	
 	function validate_input($json_data, $params)
 	{
@@ -23,7 +24,7 @@
 		
 		if(!$result)
 		{
-			return array("HTTP/1.0 403 FORBIDDEN");
+			return array(HTTP_VER . " 403 FORBIDDEN");
 		}
 		
 		$rows = sql_procedure("GetUserID", array($data["username"]), 's');
@@ -32,7 +33,13 @@
 		unset($data["password"]);
 		$data = array("user_id" => $user_id) + $data;
 		
-		return array("200", $data);
+		return array("HTTP_OK", $data);
+	}
+	
+	function fail($response)
+	{
+		header($response);
+		return json_encode(array("response" => substr(strtolower($response), strlen("HTTP/X.X XXX "))));
 	}
 	
 	function api_get_item_by_id($id)
@@ -40,7 +47,7 @@
 		$item = new Item($id);
 		if($item->get_name() == null)
 		{
-			$item_data = array("error_message" => "Item with id $id not found.");
+			return fail(HTTP_VER . " 404 ITEM NOT FOUND");
 		} else
 		{
 			$item_data = $item->to_json_array();
@@ -57,7 +64,7 @@
 		
 		if(count($items) == 0)
 		{
-			$items_data = array("error_message" => "No items found for category '$category'.");
+			return fail(HTTP_VER . " 404 CATEGORY NOT FOUND");
 		} else
 		{
 			for($i = 0; $i < count($items); $i++)
@@ -95,7 +102,7 @@
 		
 		if(count($rows) == 0)
 		{
-			$items_data = array("error_message" => "No items found for search term '$name'.");
+			return fail(HTTP_VER . " 404 NO ITEMS FOUND");
 		} else
 		{
 			foreach($rows as $row)
@@ -116,10 +123,9 @@
 		$params = array("username", "password", "first_name", "last_name", "street", "city", "state", "card_number", "card_exp_date", "cost", "cart");
 		$result = validate_input($json_data, $params);
 		
-		if($result[0] != "200")
+		if($result[0] != "HTTP_OK")
 		{
-			header($result[0]);
-			exit();
+			return fail($result[0]);
 		}
 		
 		$data = $result[1];
@@ -137,10 +143,9 @@
 		$params = array("username", "password", "cart");
 		$result = validate_input($json_data, $params);
 		
-		if($result[0] != "200")
+		if($result[0] != "HTTP_OK")
 		{
-			header($result[0]);
-			exit();
+			return fail($result[0]);
 		}
 		
 		$data = $result[1];
@@ -154,10 +159,9 @@
 		$params = array("username", "password");
 		$result = validate_input($json_data, $params);
 		
-		if($result[0] != "200")
+		if($result[0] != "HTTP_OK")
 		{
-			header($result[0]);
-			exit();
+			return fail($result[0]);
 		}
 		
 		$data = $result[1];
@@ -166,7 +170,26 @@
 		
 		return $cart_json;
 	}
+	
+	function api_validate_login($json_data)
+	{
+		$result = validate_input($json_data, array("username", "password"));
+		switch($result[0])
+		{
+			case "HTTP_OK":
+				return json_encode(array("response" => "true"));
+				break;
+			case HTTP_VER . " 403 FORBIDDEN":
+				return json_encode(array("response" => "false"));
+				break;
+			default:
+				return fail($result[0]);
+				break;
+		}
+	}
 
+	header("Content-Type: application/json");
+	
 	$method = $_SERVER["REQUEST_METHOD"];
 	$request = explode('/', trim($_SERVER["REQUEST_URI"], '/'));
 	
@@ -176,6 +199,13 @@
 	}
 	
 	$action = $request[1];
+	
+	if($action == '')
+	{
+		header(HTTP_VER . " 303 SEE OTHER");
+		header("Location: doc.txt");
+		exit();
+	}
 	
 	if($method == "GET")
 	{
@@ -197,7 +227,7 @@
 				echo api_search_for_item($name);
 				break;
 			default:
-				echo json_encode(array("error_message" => "Invalid action '$action'."));
+				echo fail(HTTP_VER . " 404 NOT FOUND");
 				break;
 		}
 	} elseif($method == "POST")
@@ -206,18 +236,22 @@
 		{
 			case "transaction":
 				$post_data = file_get_contents("php://input");
-				api_add_transaction($post_data);
+				echo api_add_transaction($post_data);
 				break;
 			case "setcart":
 				$post_data = file_get_contents("php://input");
-				api_set_cart($post_data);
+				echo api_set_cart($post_data);
 				break;
 			case "getcart":
 				$post_data = file_get_contents("php://input");
 				echo api_get_cart($post_data);
 				break;
+			case "validatelogin":
+				$post_data = file_get_contents("php://input");
+				echo api_validate_login($post_data);
+				break;
 			default:
-				echo json_encode(array("error_message" => "Invalid action '$action'."));
+				echo fail(HTTP_VER . " 404 NOT FOUND");
 				break;
 		}
 	}
