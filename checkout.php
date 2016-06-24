@@ -34,11 +34,12 @@
 			$last_name = $_POST["last_name"];
 			$street = $_POST["street"];
 			$city = $_POST["city"];
+			$state = $_POST["state"];
 			$card_number = $_POST["card_number"];
 			$card_exp_date = $_POST["card_exp_date"];
 			$cost = total_cart_cost();
 			
-			sql_procedure("AddTransaction", array($user_id, $first_name, $last_name, $street, $city, $card_number, $card_exp_date, $cost, $cart), "issssssds");
+			sql_procedure("AddTransaction", array($user_id, $first_name, $last_name, $street, $city, $state, $card_number, $card_exp_date, $cost, $cart), "isssssssds");
 			$row = sql_procedure("GetOrderNumber", array($cart, $card_number), "ss");
 			
 			$order_number = $row[0]["order_number"];

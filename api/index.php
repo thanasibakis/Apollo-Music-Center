@@ -109,7 +109,7 @@
 		{
 			$data[trim($a)] = trim($b);
 		}
-		$params = array("username", "password", "first_name", "last_name", "street", "city", "card_number", "card_exp_date", "cost", "cart");
+		$params = array("username", "password", "first_name", "last_name", "street", "city", "state", "card_number", "card_exp_date", "cost", "cart");
 		foreach($params as $param)
 		{
 			if(!isset($data[$param]))
@@ -137,7 +137,7 @@
 		unset($data["password"]);
 		$data = array("user_id" => $user_id) + $data;
 		
-		sql_procedure("AddTransaction", $data, "issssssds");
+		sql_procedure("AddTransaction", $data, "isssssssds");
 		$row = sql_procedure("GetOrderNumber", array($cart, $card_number), "ss");
 		
 		$order_number = $row[0]["order_number"];
