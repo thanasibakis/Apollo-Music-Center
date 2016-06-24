@@ -254,6 +254,7 @@ function count_cart()
 function cart_to_json()
 {
 	$json_data = array();
+	$cart = array();
 	foreach($_SESSION["cart"] as $item)
 	{
 		$item_data = array("quantity" => $item->get_quantity_in_cart(), "name" => $item->get_name());
@@ -264,19 +265,10 @@ function cart_to_json()
 
 function json_to_cart($json)
 {
-	$json_obj = json_decode($json);
-	$json_data = array();
-	foreach ($json_obj as $a => $b)
+	$json_data = json_decode($json, true);
+	
+	foreach($json_data as $id => $data)
 	{
-		$json_data[$a] = $b;
-	}
-	foreach($json_data as $id => $data_obj)
-	{
-		$data = array();
-		foreach ($data_obj as $a => $b)
-		{
-			$data[$a] = $b;
-		}
 		$quantity = $data["quantity"];
 		for($i = 0; $i < $quantity; $i++)
 		{

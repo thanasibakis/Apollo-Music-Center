@@ -1,0 +1,213 @@
+request:	GET /api/item/id
+out:
+			{
+			  "name": "nameValue",
+			  "price": "priceValue",
+			  "description": "descriptionValue",
+			  "image": "imageLocationValue",
+			  "quantity_available": "quantityValue",
+			  "quantity_in_cart": quantityValue,
+			  "id": idValue,
+			  "total_price": "priceValue"
+			}
+
+request:	GET /api/category/category_value
+out:
+			[
+				{
+				  "name": "nameValue",
+				  "price": "priceValue",
+				  "description": "descriptionValue",
+				  "image": "imageLocationValue",
+				  "quantity_available": "quantityValue",
+				  "quantity_in_cart": quantityValue,
+				  "id": idValue,
+				  "total_price": "priceValue"
+				},
+				{
+				  "name": "nameValue",
+				  "price": "priceValue",
+				  "description": "descriptionValue",
+				  "image": "imageLocationValue",
+				  "quantity_available": "quantityValue",
+				  "quantity_in_cart": quantityValue,
+				  "id": idValue,
+				  "total_price": "priceValue"
+				},
+				{
+				  "name": "nameValue",
+				  "price": "priceValue",
+				  "description": "descriptionValue",
+				  "image": "imageLocationValue",
+				  "quantity_available": "quantityValue",
+				  "quantity_in_cart": quantityValue,
+				  "id": idValue,
+				  "total_price": "priceValue"
+				}
+			]
+
+request:	GET /api/featured
+out:
+			[
+				{
+				  "name": "nameValue",
+				  "price": "priceValue",
+				  "description": "descriptionValue",
+				  "image": "imageLocationValue",
+				  "quantity_available": "quantityValue",
+				  "quantity_in_cart": quantityValue,
+				  "id": idValue,
+				  "total_price": "priceValue"
+				},
+				{
+				  "name": "nameValue",
+				  "price": "priceValue",
+				  "description": "descriptionValue",
+				  "image": "imageLocationValue",
+				  "quantity_available": "quantityValue",
+				  "quantity_in_cart": quantityValue,
+				  "id": idValue,
+				  "total_price": "priceValue"
+				},
+				{
+				  "name": "nameValue",
+				  "price": "priceValue",
+				  "description": "descriptionValue",
+				  "image": "imageLocationValue",
+				  "quantity_available": "quantityValue",
+				  "quantity_in_cart": quantityValue,
+				  "id": idValue,
+				  "total_price": "priceValue"
+				}
+			]
+
+request:	GET /api/search/name_value
+out:
+			[
+				{
+				  "name": "nameValue",
+				  "price": "priceValue",
+				  "description": "descriptionValue",
+				  "image": "imageLocationValue",
+				  "quantity_available": "quantityValue",
+				  "quantity_in_cart": quantityValue,
+				  "id": idValue,
+				  "total_price": "priceValue"
+				},
+				{
+				  "name": "nameValue",
+				  "price": "priceValue",
+				  "description": "descriptionValue",
+				  "image": "imageLocationValue",
+				  "quantity_available": "quantityValue",
+				  "quantity_in_cart": quantityValue,
+				  "id": idValue,
+				  "total_price": "priceValue"
+				},
+				{
+				  "name": "nameValue",
+				  "price": "priceValue",
+				  "description": "descriptionValue",
+				  "image": "imageLocationValue",
+				  "quantity_available": "quantityValue",
+				  "quantity_in_cart": quantityValue,
+				  "id": idValue,
+				  "total_price": "priceValue"
+				}
+			]
+
+request:	POST /api/transaction
+in:
+			{
+			  "username": "user",
+			  "password": "pass",
+			  "first_name": "first",
+			  "last_name": "last",
+			  "street": "street",
+			  "city": "city",
+			  "state": "state",
+			  "card_number": "card_number",
+			  "cost": "cost",
+			  "card_exp_date": "card_exp_date",
+			  "cart": {
+				  "name": "nameValue",
+				  "price": "priceValue",
+				  "description": "descriptionValue",
+				  "image": "imageLocationValue",
+				  "quantity_available": "quantityValue",
+				  "quantity_in_cart": quantityValue,
+				  "id": idValue,
+				  "total_price": "priceValue"
+				},
+				{
+				  "name": "nameValue",
+				  "price": "priceValue",
+				  "description": "descriptionValue",
+				  "image": "imageLocationValue",
+				  "quantity_available": "quantityValue",
+				  "quantity_in_cart": quantityValue,
+				  "id": idValue,
+				  "total_price": "priceValue"
+				},
+				{
+				  "name": "nameValue",
+				  "price": "priceValue",
+				  "description": "descriptionValue",
+				  "image": "imageLocationValue",
+				  "quantity_available": "quantityValue",
+				  "quantity_in_cart": quantityValue,
+				  "id": idValue,
+				  "total_price": "priceValue"
+				}
+			}
+
+request:	POST /api/setcart
+in:
+			{
+			  "username": "user",
+			  "password": "pass",
+			  "cart": {
+				  "name": "nameValue",
+				  "price": "priceValue",
+				  "description": "descriptionValue",
+				  "image": "imageLocationValue",
+				  "quantity_available": "quantityValue",
+				  "quantity_in_cart": quantityValue,
+				  "id": idValue,
+				  "total_price": "priceValue"
+				},
+				{
+				  "name": "nameValue",
+				  "price": "priceValue",
+				  "description": "descriptionValue",
+				  "image": "imageLocationValue",
+				  "quantity_available": "quantityValue",
+				  "quantity_in_cart": quantityValue,
+				  "id": idValue,
+				  "total_price": "priceValue"
+				},
+				{
+				  "name": "nameValue",
+				  "price": "priceValue",
+				  "description": "descriptionValue",
+				  "image": "imageLocationValue",
+				  "quantity_available": "quantityValue",
+				  "quantity_in_cart": quantityValue,
+				  "id": idValue,
+				  "total_price": "priceValue"
+				}
+			}
+			
+request:	POST /api/getcart
+in:
+			{
+			  "username": "thanasi",
+			  "password": "tb"
+			}
+out:
+			{
+				"idValue": {
+					"quantity": quantityValue,
+					"name": "nameValue"
+				}
+			}

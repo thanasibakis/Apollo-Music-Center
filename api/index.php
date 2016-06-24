@@ -6,17 +6,12 @@
 	
 	function validate_input($json_data, $params)
 	{
-		$data_obj = json_decode($json_data);
-		$data = array();
-		foreach ($data_obj as $a => $b)
-		{
-			$data[trim($a)] = trim($b);
-		}
+		$data = json_decode($json_data, true);
 		foreach($params as $param)
 		{
 			if(!isset($data[$param]))
 			{
-				return array("HTTP/1.0 400 INVALID INPUT");
+				return array("HTTP/1.0 400 INVALID INPUT MISSING $param");
 			}
 		}
 		$rows = sql_procedure("GetSalt", array($data["username"]), 's');
@@ -128,6 +123,7 @@
 		}
 		
 		$data = $result[1];
+		$data["cart"] = json_encode($data["cart"]);
 		
 		sql_procedure("AddTransaction", $data, "isssssssds");
 		$row = sql_procedure("GetOrderNumber", array($cart, $card_number), "ss");
@@ -148,7 +144,27 @@
 		}
 		
 		$data = $result[1];
+		$data["cart"] = json_encode($data["cart"]);
+		
 		sql_procedure("SetUserCart", $data, "is");
+	}
+	
+	function api_get_cart($json_data)
+	{
+		$params = array("username", "password");
+		$result = validate_input($json_data, $params);
+		
+		if($result[0] != "200")
+		{
+			header($result[0]);
+			exit();
+		}
+		
+		$data = $result[1];
+		$rows = sql_procedure("GetUserCart", $data, 'i');
+		$cart_json = $rows[0]["cart"];
+		
+		return $cart_json;
 	}
 
 	$method = $_SERVER["REQUEST_METHOD"];
@@ -192,9 +208,13 @@
 				$post_data = file_get_contents("php://input");
 				api_add_transaction($post_data);
 				break;
-			case "cart":
+			case "setcart":
 				$post_data = file_get_contents("php://input");
 				api_set_cart($post_data);
+				break;
+			case "getcart":
+				$post_data = file_get_contents("php://input");
+				echo api_get_cart($post_data);
 				break;
 			default:
 				echo json_encode(array("error_message" => "Invalid action '$action'."));

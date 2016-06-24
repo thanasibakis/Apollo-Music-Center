@@ -30,7 +30,7 @@
 						<?php
 							$rows = sql_procedure("GetMostRecentOrder", array($_SESSION["user"]["id"]), 'd');
 							$order_data = $rows[0]["order_contents"];
-							$order_data = json_decode($order_data);
+							$order_data = json_decode($order_data, true);
 							$order = array();
 							
 							foreach($order_data as $id => $data)
