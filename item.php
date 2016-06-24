@@ -76,6 +76,9 @@
 							if(isset($_SESSION["user"]))
 							{
 								include "include/add_to_cart_form.php";
+							} elseif($quantity <= 0)
+							{
+								echo '';
 							} else
 							{
 								echo "To add this item to your cart, please <a href='login.php' style='color:#e6ac00'>log in</a>.";
