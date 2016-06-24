@@ -17,14 +17,10 @@
 	</head>
 	<body>
 		<?php
-			$cart = "";
 			foreach($_SESSION["cart"] as $item)
 			{
-				create_data_vars($item);
-				sql_procedure("UpdateQuantity", array($id, $item->get_quantity_available() - $quantity_in_cart), "dd");
+				sql_procedure("UpdateQuantity", array($item->get_id(), $item->get_quantity_available() - $item->get_quantity_in_cart()), "dd");
 			}
-			
-			$cart = cart_to_json();
 			
 			$user_id = $_SESSION["user"]["id"];
 			$first_name = $_POST["first_name"];
@@ -35,6 +31,7 @@
 			$card_number = $_POST["card_number"];
 			$card_exp_date = $_POST["card_exp_date"];
 			$cost = total_cart_cost();
+			$cart = cart_to_json();
 			
 			sql_procedure("AddTransaction", array($user_id, $first_name, $last_name, $street, $city, $state, $card_number, $card_exp_date, $cost, $cart), "isssssssds");
 			$row = sql_procedure("GetOrderNumber", array($cart, $card_number), "ss");

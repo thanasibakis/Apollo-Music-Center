@@ -5,43 +5,70 @@
 	define("HTTP_VER", "HTTP/1.1");
 	define("HTTP_OK", HTTP_VER . " 200 OK");
 	
-	function validate_input($json_data, $params)
+	/**
+	 * Decodes $json_data.
+	 * Check if $json_data has elements that satisfy $params.
+	 * If applicable, replaces username and password with corresponding user_id.
+	 *
+	 * @param	string	$json_data	input to process
+	 * @param	array 	$params		required elements for $json_data
+	 * @return	array 	[HTTP response, decoded $json_data]
+	 */
+	function process_input($json_data, $params)
 	{
 		$data = json_decode($json_data, true);
+
 		foreach($params as $param)
 		{
 			if(!isset($data[$param]))
 			{
-				return array("HTTP/1.0 400 INVALID INPUT MISSING $param");
+				return array("HTTP/1.0 400 INVALID INPUT");
 			}
 		}
-		$rows = sql_procedure("GetSalt", array($data["username"]), 's');
-		$salt = $rows[0]["salt"];
-		$data["password"] = crypt($data["password"], $salt);
 		
-		$rows = sql_procedure("CheckLoginCredentials", array($data["username"], $data["password"]), "ss");
-		$result = $rows[0]["result"];
-		
-		if(!$result)
+		if(isset($data["username"]))
 		{
-			return array(HTTP_VER . " 403 FORBIDDEN");
+			$rows = sql_procedure("GetSalt", array($data["username"]), 's');
+			$salt = $rows[0]["salt"];
+			$data["password"] = crypt($data["password"], $salt);
+			
+			$rows = sql_procedure("CheckLoginCredentials", array($data["username"], $data["password"]), "ss");
+			$result = $rows[0]["result"];
+			
+			if(!$result)
+			{
+				return array(HTTP_VER . " 403 FORBIDDEN");
+			}
+			
+			$rows = sql_procedure("GetUserID", array($data["username"]), 's');
+			$user_id = $rows[0]["user_id"];
+			unset($data["username"]);
+			unset($data["password"]);
+			$data = array("user_id" => $user_id) + $data;
 		}
 		
-		$rows = sql_procedure("GetUserID", array($data["username"]), 's');
-		$user_id = $rows[0]["user_id"];
-		unset($data["username"]);
-		unset($data["password"]);
-		$data = array("user_id" => $user_id) + $data;
-		
-		return array("HTTP_OK", $data);
+		return array(HTTP_OK, $data);
 	}
 	
+	/**
+	 * Sets an error in an HTTP header.
+	 * Extracts the message from the error and returns that message in JSON format.
+	 *
+	 * @param	string	$response	error to set (in format "HTTP/X.X XXX MESSAGE")
+	 * @return	string 	JSON form of error message
+	 */
 	function fail($response)
 	{
 		header($response);
-		return json_encode(array("response" => substr(strtolower($response), strlen("HTTP/X.X XXX "))));
+		return json_encode(array("response" => substr(strtolower($response), strlen(HTTP_VER . " XXX "))));
 	}
 	
+	/**
+	 * Returns information on an item of a given ID.
+	 *
+	 * @param	string	$id		item ID
+	 * @return	string 	JSON form of item information
+	 */
 	function api_get_item_by_id($id)
 	{
 		$item = new Item($id);
@@ -57,6 +84,12 @@
 		return $json;
 	}
 	
+	/**
+	 * Returns information on items of a given category.
+	 *
+	 * @param	string	$category	item category
+	 * @return	string 	JSON form of item information
+	 */
 	function api_get_category_items($category)
 	{
 		$items = get_category_items($category);
@@ -79,6 +112,11 @@
 		return $json;
 	}
 	
+	/**
+	 * Returns information on featured items.
+	 *
+	 * @return	string 	JSON form of item information
+	 */
 	function api_get_featured_items()
 	{
 		$items = get_featured_items();
@@ -95,6 +133,12 @@
 		return $json;
 	}
 	
+	/**
+	 * Returns information on items whose names are similar to a given search term.
+	 *
+	 * @param	string	$name	search term
+	 * @return	string 	JSON form of item information
+	 */
 	function api_search_for_item($name)
 	{
 		$items_data = array();
@@ -118,32 +162,54 @@
 		return $json;
 	}
 	
+	/**
+	 * Processes a transaction and returns the order number.
+	 *
+	 * @param	string	$json_data		transaction information
+	 * @return	string 	JSON form of order number
+	 */
 	function api_add_transaction($json_data)
 	{
-		$params = array("username", "password", "first_name", "last_name", "street", "city", "state", "card_number", "card_exp_date", "cost", "cart");
-		$result = validate_input($json_data, $params);
+		$params = array("username", "password", "first_name", "last_name", "street", "city", "state", "card_number", "card_exp_date", "cost");
+		$result = process_input($json_data, $params);
 		
-		if($result[0] != "HTTP_OK")
+		if($result[0] != HTTP_OK)
 		{
 			return fail($result[0]);
 		}
 		
 		$data = $result[1];
-		$data["cart"] = json_encode($data["cart"]);
+		$json_temp_array = json_decode($json_data, true);
+		$username = $json_temp_array["username"];
+		$password = $json_temp_array["password"];
+		$data["cart"] = api_get_cart(json_encode(array("username" => $username, "password" => $password)));
+		
+		$cart_temp_arr = json_decode($data["cart"], true);
+		foreach($cart_temp_arr as $id => $item_array)
+		{
+			$item = new Item($id);
+			sql_procedure("UpdateQuantity", array($id, $item->get_quantity_available() - $item_array["quantity"]), "dd");
+		}
 		
 		sql_procedure("AddTransaction", $data, "isssssssds");
-		$row = sql_procedure("GetOrderNumber", array($cart, $card_number), "ss");
+		$row = sql_procedure("GetOrderNumber", array($data["cart"], $data["card_number"]), "ss");
+		api_set_cart(json_encode(array("username" => $username, "password" => $password), "cart" => "[]"));
 		
 		$order_number = $row[0]["order_number"];
 		return json_encode(array("order_number" => $order_number));
 	}
 	
+	/**
+	 * Updates a given user's cart in the database.
+	 *
+	 * @param	string	$json_data		user information
+	 */
 	function api_set_cart($json_data)
 	{
 		$params = array("username", "password", "cart");
-		$result = validate_input($json_data, $params);
+		$result = process_input($json_data, $params);
 		
-		if($result[0] != "HTTP_OK")
+		if($result[0] != HTTP_OK)
 		{
 			return fail($result[0]);
 		}
@@ -154,12 +220,18 @@
 		sql_procedure("SetUserCart", $data, "is");
 	}
 	
+	/**
+	 * Retrieves a given user's cart from the database.
+	 *
+	 * @param	string	$json_data		user information
+	 * @return	string 	JSON form of cart
+	 */
 	function api_get_cart($json_data)
 	{
 		$params = array("username", "password");
-		$result = validate_input($json_data, $params);
+		$result = process_input($json_data, $params);
 		
-		if($result[0] != "HTTP_OK")
+		if($result[0] != HTTP_OK)
 		{
 			return fail($result[0]);
 		}
@@ -171,12 +243,18 @@
 		return $cart_json;
 	}
 	
+	/**
+	 * Checks to see if a given username and password pair is valid.
+	 *
+	 * @param	string	$json_data		login credentials
+	 * @return	string 	JSON form of true or false response
+	 */
 	function api_validate_login($json_data)
 	{
-		$result = validate_input($json_data, array("username", "password"));
+		$result = process_input($json_data, array("username", "password"));
 		switch($result[0])
 		{
-			case "HTTP_OK":
+			case HTTP_OK:
 				return json_encode(array("response" => "true"));
 				break;
 			case HTTP_VER . " 403 FORBIDDEN":
@@ -187,6 +265,8 @@
 				break;
 		}
 	}
+
+	/************* Begin Main *************/
 
 	header("Content-Type: application/json");
 	

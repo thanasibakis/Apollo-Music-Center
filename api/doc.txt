@@ -141,36 +141,6 @@ in:
 			  "card_number": "card_number",
 			  "cost": "cost",
 			  "card_exp_date": "card_exp_date",
-			  "cart": {
-				  "name": "nameValue",
-				  "price": "priceValue",
-				  "description": "descriptionValue",
-				  "image": "imageLocationValue",
-				  "quantity_available": "quantityValue",
-				  "quantity_in_cart": quantityValue,
-				  "id": idValue,
-				  "total_price": "priceValue"
-				},
-				{
-				  "name": "nameValue",
-				  "price": "priceValue",
-				  "description": "descriptionValue",
-				  "image": "imageLocationValue",
-				  "quantity_available": "quantityValue",
-				  "quantity_in_cart": quantityValue,
-				  "id": idValue,
-				  "total_price": "priceValue"
-				},
-				{
-				  "name": "nameValue",
-				  "price": "priceValue",
-				  "description": "descriptionValue",
-				  "image": "imageLocationValue",
-				  "quantity_available": "quantityValue",
-				  "quantity_in_cart": quantityValue,
-				  "id": idValue,
-				  "total_price": "priceValue"
-				}
 			}
 error:
 			{
