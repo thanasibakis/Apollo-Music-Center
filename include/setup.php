@@ -50,8 +50,24 @@ function refValues($arr)
 	return $refs;
 }
 
-function sql_procedure($procedure, $args=array(), $types='')
+function sql_procedure($procedure, $args=array(), $types='', $should_log=true)
 {
+	// log call
+	$do_not_log_procedures = array("LogSQL", "GetCategories", "GetColumnByID", "GetFeatured", "GetIDbyCategory", "GetIDbyName", "GetMostRecentOrder", "GetOrderNumber", "GetSalt", "GetUserCart", "GetUserID");
+	
+	foreach($do_not_log_procedures as $proc)
+	{
+		if($procedure == $proc)
+		{
+			$should_log = false;
+		}
+	}
+	
+	if($should_log)
+	{
+		sql_procedure("LogSQL", array($procedure, json_encode($args)), "ss");
+	}
+	
 	// set up db connection
 	$link = mysqli_init();
 	$success = mysqli_real_connect(
@@ -82,6 +98,7 @@ function sql_procedure($procedure, $args=array(), $types='')
 	mysqli_stmt_close($stmt);
 	mysqli_close($link);
 	
+	// return result, or a blank array if there is none
 	if(gettype($response) == "boolean")
 	{
 		return array('');
