@@ -26,6 +26,11 @@
 			$cart_json = $rows[0]["cart"];
 			json_to_cart($cart_json);
 			
+			if(isset($_SESSION["item_id_before_login"]))
+			{
+				include "add_to_cart.php";
+			}
+			
 			header("Location: cart.php");
 			exit();
 		} else
@@ -55,6 +60,12 @@
 			session_regenerate_id(); // put before setting session user data below!
 			$_SESSION["user"] = array("name" => $username, "id" => $user_id);
 			$_SESSION["cart"] = array();
+			
+			if(isset($_SESSION["item_id_before_login"]))
+			{
+				include "add_to_cart.php";
+			}
+			
 			header("Location: cart.php");
 			exit();
 		}

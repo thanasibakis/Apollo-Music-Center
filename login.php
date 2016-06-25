@@ -21,6 +21,11 @@
 				$message = htmlentities($_GET["message"]);
 				$username = htmlentities($_GET["username"]);
 			}
+			if(isset($_GET["add"]))
+			{
+				// user clicked on item to add to cart but wasn't logged in; add to cart once they do
+				$_SESSION["item_id_before_login"] = $_GET["add"];
+			}
 		?>
 		<?php include "include/header.php"; ?>
 		<section>

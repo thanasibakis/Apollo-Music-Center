@@ -4,6 +4,10 @@
 	if(isset($_POST["id"]))
 	{
 		$id = $_POST["id"];
+	} elseif(isset($_SESSION["item_id_before_login"]))
+	{
+		$id = $_SESSION["item_id_before_login"];
+		unset($_SESSION["item_id_before_login"]);
 	}
 	
 	if(isset($id))

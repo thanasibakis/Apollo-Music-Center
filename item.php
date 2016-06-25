@@ -81,7 +81,7 @@
 								echo '';
 							} else
 							{
-								echo "To add this item to your cart, please <a href='login.php' style='color:#e6ac00'>log in</a>.";
+								echo "To add this item to your cart, please <a href='login.php?add=$id' style='color:#e6ac00'>log in</a>.";
 							}
 						?>
 					</td>
