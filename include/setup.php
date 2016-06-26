@@ -204,9 +204,7 @@ class Item
 			"description" => $this->get_description(),
 			"image" => $this->get_image_location(),
 			"quantity_available" => $this->get_quantity_available(),
-			"quantity_in_cart" => $this->get_quantity_in_cart(),
-			"id" => $this->get_id(),
-			"total_price" => $this->get_total_price()
+			"id" => $this->get_id()
 		);
 		
 		return $item_data;
@@ -274,8 +272,8 @@ function cart_to_json()
 	$cart = array();
 	foreach($_SESSION["cart"] as $item)
 	{
-		$item_data = array("quantity" => $item->get_quantity_in_cart(), "name" => $item->get_name());
-		$json_data['' . $item->get_id() . ''] = $item_data;
+		$item_data = array("quantity" => $item->get_quantity_in_cart(), "name" => $item->get_name(), "id" => $item->get_id());
+		$json_data[] = $item_data;
 	}
 	return json_encode($json_data);
 }
@@ -284,8 +282,9 @@ function json_to_cart($json)
 {
 	$json_data = json_decode($json, true);
 	
-	foreach($json_data as $id => $data)
+	foreach($json_data as $data)
 	{
+		$id = $data["id"];
 		$quantity = $data["quantity"];
 		for($i = 0; $i < $quantity; $i++)
 		{

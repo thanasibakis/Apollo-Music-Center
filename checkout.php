@@ -38,6 +38,7 @@
 			
 			$order_number = $row[0]["order_number"];
 			$_SESSION["cart"] = array();
+			sql_procedure("SetUserCart", array($user_id, json_encode($_SESSION["cart"])), "is");
 		?>
 		<?php include "include/header.php"; ?>
 		<section>

@@ -79,7 +79,6 @@
 		{
 			$item_data = $item->to_json_array();
 		}
-		
 		$json = json_encode($item_data);
 		return $json;
 	}
@@ -170,7 +169,7 @@
 	 */
 	function api_add_transaction($json_data)
 	{
-		$params = array("username", "password", "first_name", "last_name", "street", "city", "state", "card_number", "card_exp_date", "cost");
+		$params = array("username", "password", "first_name", "last_name", "street", "city", "state", "card_number", "card_exp_date");
 		$result = process_input($json_data, $params);
 		
 		if($result[0] != HTTP_OK)
@@ -182,18 +181,23 @@
 		$json_temp_array = json_decode($json_data, true);
 		$username = $json_temp_array["username"];
 		$password = $json_temp_array["password"];
+		$data["cost"] = ""; // add before adding cart to array
 		$data["cart"] = api_get_cart(json_encode(array("username" => $username, "password" => $password)));
 		
 		$cart_temp_arr = json_decode($data["cart"], true);
-		foreach($cart_temp_arr as $id => $item_array)
+		$total_price = 0;
+		foreach($cart_temp_arr as $item_array)
 		{
+			$id = $item_array["id"];
 			$item = new Item($id);
+			$total_price += $item->get_price_each() * $item_array["quantity"];
 			sql_procedure("UpdateQuantity", array($id, $item->get_quantity_available() - $item_array["quantity"]), "dd");
 		}
+		$data["cost"] = $total_price;
 		
 		sql_procedure("AddTransaction", $data, "isssssssds");
 		$row = sql_procedure("GetOrderNumber", array($data["cart"], $data["card_number"]), "ss");
-		api_set_cart(json_encode(array("username" => $username, "password" => $password), "cart" => "[]"));
+		api_set_cart(json_encode(array("username" => $username, "password" => $password, "cart" => "[]")));
 		
 		$order_number = $row[0]["order_number"];
 		return json_encode(array("order_number" => $order_number));
@@ -215,7 +219,16 @@
 		}
 		
 		$data = $result[1];
-		$data["cart"] = json_encode($data["cart"]);
+		
+		$cart = array();
+		foreach($data["cart"] as $item_array)
+		{
+			$id = $item_array["id"];
+			$item = new Item($id);
+			$item_data = array("quantity" => $item_array["quantity"], "name" => $item->get_name(), "id" => $item->get_id());
+			$cart[] = $item_data;
+		}
+		$data["cart"] = json_encode($cart);
 		
 		sql_procedure("SetUserCart", $data, "is");
 	}

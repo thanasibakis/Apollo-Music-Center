@@ -6,9 +6,7 @@ out:
 			  "description": "descriptionValue",
 			  "image": "imageLocationValue",
 			  "quantity_available": "quantityValue",
-			  "quantity_in_cart": quantityValue,
-			  "id": idValue,
-			  "total_price": "priceValue"
+			  "id": idValue
 			}
 error:
 			{
@@ -24,9 +22,7 @@ out:
 				  "description": "descriptionValue",
 				  "image": "imageLocationValue",
 				  "quantity_available": "quantityValue",
-				  "quantity_in_cart": quantityValue,
-				  "id": idValue,
-				  "total_price": "priceValue"
+				  "id": idValue
 				},
 				{
 				  "name": "nameValue",
@@ -34,9 +30,7 @@ out:
 				  "description": "descriptionValue",
 				  "image": "imageLocationValue",
 				  "quantity_available": "quantityValue",
-				  "quantity_in_cart": quantityValue,
-				  "id": idValue,
-				  "total_price": "priceValue"
+				  "id": idValue
 				},
 				{
 				  "name": "nameValue",
@@ -44,9 +38,7 @@ out:
 				  "description": "descriptionValue",
 				  "image": "imageLocationValue",
 				  "quantity_available": "quantityValue",
-				  "quantity_in_cart": quantityValue,
-				  "id": idValue,
-				  "total_price": "priceValue"
+				  "id": idValue
 				}
 			]
 error:
@@ -62,10 +54,8 @@ out:
 				  "price": "priceValue",
 				  "description": "descriptionValue",
 				  "image": "imageLocationValue",
-				  "quantity_available": "quantityValue",
-				  "quantity_in_cart": quantityValue,
-				  "id": idValue,
-				  "total_price": "priceValue"
+				  "quantity_available": "quantityValue"
+				  "id": idValue
 				},
 				{
 				  "name": "nameValue",
@@ -73,9 +63,7 @@ out:
 				  "description": "descriptionValue",
 				  "image": "imageLocationValue",
 				  "quantity_available": "quantityValue",
-				  "quantity_in_cart": quantityValue,
 				  "id": idValue,
-				  "total_price": "priceValue"
 				},
 				{
 				  "name": "nameValue",
@@ -83,9 +71,7 @@ out:
 				  "description": "descriptionValue",
 				  "image": "imageLocationValue",
 				  "quantity_available": "quantityValue",
-				  "quantity_in_cart": quantityValue,
-				  "id": idValue,
-				  "total_price": "priceValue"
+				  "id": idValue
 				}
 			]
 
@@ -98,9 +84,7 @@ out:
 				  "description": "descriptionValue",
 				  "image": "imageLocationValue",
 				  "quantity_available": "quantityValue",
-				  "quantity_in_cart": quantityValue,
-				  "id": idValue,
-				  "total_price": "priceValue"
+				  "id": idValue
 				},
 				{
 				  "name": "nameValue",
@@ -108,9 +92,7 @@ out:
 				  "description": "descriptionValue",
 				  "image": "imageLocationValue",
 				  "quantity_available": "quantityValue",
-				  "quantity_in_cart": quantityValue,
-				  "id": idValue,
-				  "total_price": "priceValue"
+				  "id": idValue
 				},
 				{
 				  "name": "nameValue",
@@ -118,9 +100,7 @@ out:
 				  "description": "descriptionValue",
 				  "image": "imageLocationValue",
 				  "quantity_available": "quantityValue",
-				  "quantity_in_cart": quantityValue,
-				  "id": idValue,
-				  "total_price": "priceValue"
+				  "id": idValue
 				}
 			]
 error:
@@ -139,8 +119,7 @@ in:
 			  "city": "city",
 			  "state": "state",
 			  "card_number": "card_number",
-			  "cost": "cost",
-			  "card_exp_date": "card_exp_date",
+			  "card_exp_date": "card_exp_date"
 			}
 error:
 			{
@@ -152,36 +131,20 @@ in:
 			{
 			  "username": "user",
 			  "password": "pass",
-			  "cart": {
-				  "name": "nameValue",
-				  "price": "priceValue",
-				  "description": "descriptionValue",
-				  "image": "imageLocationValue",
-				  "quantity_available": "quantityValue",
-				  "quantity_in_cart": quantityValue,
-				  "id": idValue,
-				  "total_price": "priceValue"
-				},
-				{
-				  "name": "nameValue",
-				  "price": "priceValue",
-				  "description": "descriptionValue",
-				  "image": "imageLocationValue",
-				  "quantity_available": "quantityValue",
-				  "quantity_in_cart": quantityValue,
-				  "id": idValue,
-				  "total_price": "priceValue"
-				},
-				{
-				  "name": "nameValue",
-				  "price": "priceValue",
-				  "description": "descriptionValue",
-				  "image": "imageLocationValue",
-				  "quantity_available": "quantityValue",
-				  "quantity_in_cart": quantityValue,
-				  "id": idValue,
-				  "total_price": "priceValue"
-				}
+			  "cart": [
+			  		{
+					  "quantity": quantityValue,
+					  "id": idValue
+					},
+					{
+					  "quantity": quantityValue,
+					  "id": idValue
+					},
+					{
+					  "quantity": quantityValue,
+					  "id": idValue
+					}
+				]
 			}
 error:
 			{
@@ -191,22 +154,30 @@ error:
 request:	POST /api/getcart
 in:
 			{
-			  "username": "thanasi",
-			  "password": "tb"
+			  "username": "user",
+			  "password": "pass"
 			}
 out:
-			{
-				"idValue": {
-					"quantity": quantityValue,
-					"name": "nameValue"
+			[
+				{
+				  "quantity": quantityValue,
+				  "id": idValue
+				},
+				{
+				  "quantity": quantityValue,
+				  "id": idValue
+				},
+				{
+				  "quantity": quantityValue,
+				  "id": idValue
 				}
-			}
+			]
 			
 request		POST /api/validatelogin
 in:
 			{
-			  "username": "thanasi",
-			  "password": "tb"
+			  "username": "user",
+			  "password": "pass"
 			}
 			
 out:
